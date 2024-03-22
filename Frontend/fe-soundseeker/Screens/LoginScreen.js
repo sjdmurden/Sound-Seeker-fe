@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Pressable } from "react-native";
 import * as React from "react";
-import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
+import { useAuthRequest } from "expo-auth-session";
 import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from "@expo/vector-icons";
 
-function LoginScreen() {
-  // const navigation = useNavigation();
+function LoginScreen({ navigation }) {
+  const [token, setToken] = useState("");
   const discovery = {
     authorizationEndpoint: "https://accounts.spotify.com/authorize",
     tokenEndpoint: "https://accounts.spotify.com/api/token",
@@ -14,7 +14,7 @@ function LoginScreen() {
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: "423cac5b8a904d3b8b234f231f424cbf",
-      scopes: ["user-read-email", "playlist-modify-public"],
+      scopes: ["user-top-read"],
       usePKCE: false,
       redirectUri: "exp://localhost:8081/--/spotify-auth-callback",
     },
@@ -24,7 +24,8 @@ function LoginScreen() {
   useEffect(() => {
     if (response?.type === "success") {
       const { code } = response.params;
-      console.log(code);
+      setToken(code);
+      navigation.navigate('Preferences', {token: code})
     }
   }, [response]);
   return (
@@ -40,7 +41,9 @@ function LoginScreen() {
         <Text>Millions of Songs Free on Spotify</Text>
         <View style={{ height: 80 }} />
         <Pressable
-          onPress={promptAsync}
+          onPress={() => {
+            promptAsync();
+          }}
           style={{ backgroundColor: "yellow", width: 200 }}
         >
           <Text>Sign in with Spotify</Text>

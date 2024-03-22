@@ -4,7 +4,7 @@ import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from "./Screens/HomeScreen";
-import ProfileScreen from "./Screens/ProfileScreen";
+import PreferencesScreen from "./Screens/PreferencesScreen.js"
 import { Text } from "react-native";
 import LoginScreen from "./Screens/LoginScreen";
 
@@ -37,8 +37,8 @@ function BottomTabs() {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="Preferences"
+        component={PreferencesScreen}
         options={{
           tabBarLabel: "Home",
           headerShown: false,
@@ -63,6 +63,7 @@ function Navigation(){
          <Stack.Navigator>
             <Stack.Screen name='Login' component={LoginScreen} options={{headerShown:false}}/>
             <Stack.Screen name='main' component={BottomTabs} options={{headerShown:false}}/>
+            <Stack.Screen name='Preferences' component={PreferencesScreen} options={{headerShown:false}}/>
          </Stack.Navigator>
       </NavigationContainer>
    )
