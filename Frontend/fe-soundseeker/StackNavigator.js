@@ -6,12 +6,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from "./Screens/HomeScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
 import { Text } from "react-native";
+import LoginScreen from "./Screens/LoginScreen";
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{
+      tabBarStyle:{
+         backgroundColor: 'green',
+         bottom:0,
+         left:0,
+         right:0,
+         position: 'absolute'
+      }
+    }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -52,6 +61,7 @@ function Navigation(){
    return (
       <NavigationContainer>
          <Stack.Navigator>
+            <Stack.Screen name='Login' component={LoginScreen} options={{headerShown:false}}/>
             <Stack.Screen name='main' component={BottomTabs} options={{headerShown:false}}/>
          </Stack.Navigator>
       </NavigationContainer>
