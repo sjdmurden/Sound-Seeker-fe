@@ -1,14 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import SpotifyLogin from './Screens/LoginScreen';
-import {AuthSession} from 'expo'
-import Navigation from './StackNavigator'
-// console.log(AuthSession.getRedirectUrl())
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import SpotifyLogin from "./Screens/LoginScreen";
+import Navigation from "./StackNavigator";
 
 export default function App() {
   return (
     <>
-      <Navigation/>
+      <Navigation />
     </>
   );
 }
@@ -16,11 +14,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
-
-
-
