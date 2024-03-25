@@ -37,6 +37,19 @@ async function getRefreshTokenData(refresh_token) {
       return data;
     });
 }
+
+async function getUserDetails(access_token) {
+  return axios
+    .get("https://api.spotify.com/v1/me", {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    })
+    .then(({ data: { display_name, images } }) => {
+      return { display_name, image: images[0] };
+    });
+}
+
 async function getTopArtists(access_token) {
   return axios
     .get("https://api.spotify.com/v1/me/top/artists", {
@@ -54,7 +67,9 @@ async function getTopArtists(access_token) {
 async function saveUser(body) {
   connect();
   const tokenData = await getFirstTokenData(body.code);
+  const userDetails = await getUserDetails(tokenData.access_token);
   const topArtists = await getTopArtists(tokenData.access_token);
+
   const topGenresObj = {};
   topArtists.forEach((artist) => {
     artist.genres.forEach((genre) => {
@@ -69,15 +84,14 @@ async function saveUser(body) {
   topGenresArr.sort((previous, current) => {
     return topGenresObj[current] - topGenresObj[previous];
   });
+
   const newBody = {
-    username: body.username,
-    image: body.image,
+    username: userDetails.display_name,
+    image: userDetails.image,
     access_token: tokenData.access_token,
     refresh_token: tokenData.refresh_token,
     expiry_date: Date.now() + tokenData.expires_in * 1000,
-    top_artists: topArtists.map((artist) => {
-      return artist.name;
-    }),
+    top_artists: topArtists.map((artist) => artist.name),
     top_genres: topGenresArr,
   };
   const newUser = new User(newBody);
