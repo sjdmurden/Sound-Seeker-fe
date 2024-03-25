@@ -1,33 +1,58 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Pressable } from "react-native";
-import * as React from "react";
-import { useAuthRequest } from "expo-auth-session";
+import { useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from "@expo/vector-icons";
+import axios from "axios";
+import { encode as btoa } from 'base-64';
+
+const discovery = {
+  authorizationEndpoint: "https://accounts.spotify.com/authorize",
+  tokenEndpoint: "https://accounts.spotify.com/api/token",
+};
 
 function LoginScreen({ navigation }) {
   const [token, setToken] = useState("");
-  const discovery = {
-    authorizationEndpoint: "https://accounts.spotify.com/authorize",
-    tokenEndpoint: "https://accounts.spotify.com/api/token",
-  };
+  const clientId = process.env.EXPO_PUBLIC_CLIENT_ID;
+  const clientSecret = process.env.EXPO_PUBLIC_CLIENT_SECRET;
+  const redirectUri = process.env.EXPO_PUBLIC_REDIRECT_URI;
+
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: "423cac5b8a904d3b8b234f231f424cbf",
+      clientId: clientId,
       scopes: ["user-top-read"],
       usePKCE: false,
-      redirectUri: "exp://localhost:8081/--/spotify-auth-callback",
+      redirectUri: redirectUri
     },
     discovery
   );
 
+  async function getFirstTokenData(code) {
+    const postBody =`grant_type=authorization_code&code=${code}&redirect_uri=${redirectUri}`
+
+    return axios
+      .post('https://accounts.spotify.com/api/token', postBody, {
+        headers: {
+          Authorization: 'Basic ' + btoa(`${clientId}:${clientSecret}`),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+      })
+      .then(({ data }) => {
+        return data;
+      });
+  }
+
   useEffect(() => {
     if (response?.type === "success") {
       const { code } = response.params;
-      setToken(code);
-      navigation.navigate('Preferences', {token: code})
+      getFirstTokenData(code)
+        .then(({ access_token }) => {
+          setToken(access_token);
+          navigation.navigate('Preferences', {token: access_token})
+        });
     }
   }, [response]);
+
   return (
     <LinearGradient colors={["red", "green"]} style={{ flex: 1 }}>
       <SafeAreaView>
@@ -52,104 +77,5 @@ function LoginScreen({ navigation }) {
     </LinearGradient>
   );
 }
+
 export default LoginScreen;
-//    <View className="App">
-//    <View className="App-header">
-//      {!token ? (
-//         <Text
-//         href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=user-top-read`}
-//         >
-//          Login to Spotify
-//        </Text>
-//      ) : (
-//         <Button onPress={logout} title='Logout'/>
-//         )}
-//      <Button onPress={searchUser} title='Search'/>
-//      {renderUser()}
-//    </View>
-//  </View>
-//   const CLIENT_ID = "02dc0530a3d4412f95aebccc831606c5";
-//   const REDIRECT_URI = "exp://localhost:8081/--/spotify-auth-callback";
-//   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-//   const RESPONSE_TYPE = "token";
-//   const [token, setToken] = useState("");
-//   const [user, setUser] = useState([]);
-//   useEffect(() => {
-//     const hash = window.location.hash;
-//     let token = window.localStorage.getItem("token");
-//     if (!token && hash) {
-//       token = hash
-//         .substring(1)
-//         .split("&")
-//         .find((elem) => elem.startsWith("access_token"))
-//         .split("=")[1];
-//       window.location.hash = "";
-//       window.localStorage.setItem("token", token);
-//     }
-//     setToken(token);
-//   }, []);
-//   const logout = () => {
-//     setToken("");
-//     window.localStorage.removeItem("token");
-//   };
-//   const searchUser = async (e) => {
-//     e.preventDefault();
-//     const { data } = await axios.get("https://api.spotify.com/v1/me/top/artists", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     setUser(data);
-//   };
-//   const renderUser = () => {
-//     console.log(user);
-//   };
-
-// useEffect(() => {
-//   const checkTokenValidity = async () => {
-//     const accessToken = await AsyncStorage.getItem("token");
-//     const expirationDate = await AsyncStorage.getItem("expirationDate");
-//     console.log("access token", accessToken);
-//     console.log("expiration date", expirationDate);
-//     console.log(AuthSession)
-
-//     if (accessToken && expirationDate) {
-//       const currentTime = Date.now();
-//       if (currentTime < parseInt(expirationDate)) {
-//         // token still valid
-//         navigation.replace("Main");
-//       } else {
-//         // token would be expired so need to remove it from async storage
-//         AsyncStorage.removeItem("token");
-//         AsyncStorage.removeItem("expirationDate");
-//       }
-//     }
-//   };
-//   checkTokenValidity();
-// }, []);
-// async function authenticate() {
-//   const config = {
-//     issuer: "https://acounts.spotify.com",
-//     clientId: "423cac5b8a904d3b8b234f231f424cbf",
-//     scopes: [
-//       "user-read-email",
-//       "user-library-read",
-//       "user-read-recently-played",
-//       "user-top-read",
-//       "playlist-read-private",
-//       "playlist-read-collaboartive",
-//       "playlist-modify-public",
-//     ],
-//     redirectUri: "exp://localhost:8081/--/spotify-auth-callback",
-//   };
-//   const result = await AuthSession.loadAsync(config, config.issuer);
-//   console.log(result);
-//   if (result.accessToken) {
-//     const expirationDate = new Date(
-//       result.accessTokenExpirationDate
-//     ).getTime();
-//     AsyncStorage.setItem("token", result.accessToken);
-//     AsyncStorage.setItem("expirationDate", expirationDate.toString());
-//     navigation.navigate("Main");
-//   }
-// }
