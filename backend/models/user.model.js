@@ -45,8 +45,8 @@ async function getUserDetails(access_token) {
         Authorization: "Bearer " + access_token,
       },
     })
-    .then(({ data: { display_name, images } }) => {
-      return { display_name, image: images[0] };
+    .then(({ data: { id, display_name, images } }) => {
+      return { id, display_name, image: images[0].url };
     });
 }
 
@@ -86,7 +86,8 @@ async function saveUser(body) {
   });
 
   const newBody = {
-    username: userDetails.display_name,
+    id: userDetails.id,
+    display_name: userDetails.display_name,
     image: userDetails.image,
     access_token: tokenData.access_token,
     refresh_token: tokenData.refresh_token,
