@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const connect = require('../database/connection.js');
 const User = require("../mongoose-models/user.js");
 const axios = require('axios')
-const clientId = process.env.EXPO_PUBLIC_CLIENT_ID;
-const clientSecret = process.env.EXPO_PUBLIC_CLIENT_SECRET;
-const redirectUri = process.env.EXPO_PUBLIC_REDIRECT_URI;
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const redirectUri = process.env.REDIRECT_URI;
 
 async function getFirstTokenData(code) {
     const postBody =`grant_type=authorization_code&code=${code}&redirect_uri=${redirectUri}`

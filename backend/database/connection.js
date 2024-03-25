@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const uri = require('../utils/uri.js');
 const ENV = process.env.NODE_ENV || 'development';
+const uri = process.env.DATABASE_URI
 
 require('dotenv').config(
     {
