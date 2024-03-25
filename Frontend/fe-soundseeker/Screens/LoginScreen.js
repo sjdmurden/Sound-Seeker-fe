@@ -48,7 +48,7 @@ function LoginScreen({ navigation }) {
       getFirstTokenData(code)
         .then(({ access_token }) => {
           setToken(access_token);
-          navigation.navigate('Preferences', {token: access_token})
+          navigation.navigate('SearchScreen', {token: access_token})
         });
     }
   }, [response]);

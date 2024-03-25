@@ -38,9 +38,9 @@ const PreferencesScreen = ({
         <Button onPress={getArtists} title="getArtists" />
         {artists.map((artist) => {
           return (
-            <SafeAreaView key={artist.id}>
-              <Text>{artist.name}</Text>
-              <Text>{artist.genres.slice(0, 3) + " "}</Text>
+            <SafeAreaView>
+              <Text key={artist.id}>{artist.name}</Text>
+              <Text key={artist.id}>{artist.genres.slice(0, 3) + " "}</Text>
             </SafeAreaView>
           );
         })}

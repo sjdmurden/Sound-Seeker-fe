@@ -1,52 +1,61 @@
 import * as React from "react";
-import { Searchbar } from "react-native-paper";
 import { useState } from "react";
-import axios from "axios";
+
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text, TextInput } from "react-native";
+import { StyleSheet, TextInput, Text } from "react-native";
+import searchAllFestivals from "../api";
+import FestivalCard from "./FestivalCard";
 
 const SearchScreen = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [festivalQuery, setFestivalQuery] = useState("");
   const [festivalResult, setFestivalResult] = useState("");
-  console.log("our search: ", searchQuery);
 
-  function searchAllFestivals(festival_name) {
-    return axios
-      .get(
-        `https://www.skiddle.com/api/v1/events?api_key=638e2af9d6545b37c5bf2afbed3261cc&eventcode=FEST&keyword=${festival_name}&description=1`
-      )
-      .then((response) => {
-        if (response.data.results.length > 0) {
-          setFestivalResult(response.data.results);
-        } else {
-          setFestivalResult("No festival found");
-        }
-        setSearchQuery("");
-      });
-  }
-  function handleSearch() {
-   searchAllFestivals(searchQuery)
+  function handleFestivalSearch() {
+   searchAllFestivals(searchQuery).then((response) => {
+    if (response.data.results.length > 0) {
+      setFestivalResult(response.data.results);
+    } else {
+      setFestivalResult("No festival found");
+    }
+    setSearchQuery("");
+  });
   }
 
   return (
     <SafeAreaView>
-      
+      <Text> search by festival name</Text>
       <TextInput
         placeholder="Search..."
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        onSubmitEditing={handleSearch}
+        value={festivalQuery}
+        onChangeText={setFestivalQuery}
+        onSubmitEditing={handleFestivalSearch}
+        style={styles.searchBox}
       />
       {Object.keys(festivalResult).length > 0 && festivalResult.map((festival) => {
 
           return (
-            <SafeAreaView key={festival.id}>
-              <Text>{festival.eventname}</Text>
-            </SafeAreaView>
+            <FestivalCard festival={festival}/>
           );
         })}
+        <Text> search by band name</Text>
+         <TextInput
+        placeholder="Search..."
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        onSubmitEditing={handleSearch}
+        style={styles.searchBox}
+      />
     </SafeAreaView>
+
   );
 };
+
+const styles = StyleSheet.create({
+  searchBox: {
+    borderColor: "#ccc",
+    borderWidth: 2,
+    borderRadius: 3,
+  }
+})
 
 export default SearchScreen;
