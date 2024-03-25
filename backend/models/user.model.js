@@ -33,10 +33,24 @@ async function getRefreshTokenData(refresh_token) {
         return data;
         });
     }
+async function getTopArtists(access_token){
+  return axios
+  .get("https://api.spotify.com/v1/me/top/artists", {
+    params: { limit: 50, offset: 0 },
+    headers: {
+      Authorization: "Bearer " + access_token,
+    },
+  })
+  .then(({ data: { items } }) => {
+    console.log(items)
+    return items
+  })
+}
 
 async function saveUser(body) {
     connect();
     const tokenData = await getFirstTokenData(body.code)
+    const topArtists = await getTopArtists(tokenData.access_token)
     const newBody = {username: body.username, image: body.image, access_token: tokenData.access_token, refresh_token: tokenData.refresh_token, expiry_date: Date.now() + (tokenData.expires_in * 1000)}
     const newUser = new User(newBody);
     await newUser.save();
