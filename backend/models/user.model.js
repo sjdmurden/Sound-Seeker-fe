@@ -101,13 +101,13 @@ async function saveUser(body) {
   return newUser;
 }
 
-async function fetchUser(username) {
+async function fetchUser(id) {
   connect();
-  const user = await User.findOne({ username: username });
+  const user = await User.findOne({ id });
   if (Date.now() >= user.expiry_date) {
     const tokenData = await getRefreshTokenData(user.refresh_token);
     await User.findOneAndUpdate(
-      { username },
+      { id },
       {
         access_token: tokenData.access_token,
         expiry_date: Date.now() + tokenData.expires_in * 1000,
