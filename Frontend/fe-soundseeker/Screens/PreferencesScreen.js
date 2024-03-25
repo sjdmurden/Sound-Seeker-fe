@@ -1,8 +1,19 @@
-import { StyleSheet, Text, SafeAreaView, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  Button,
+  ScrollView,
+} from "react-native";
 import React, { useState } from "react";
 import axios from "axios";
+import SearchScreen from "./SearchScreen";
 
-const PreferencesScreen = ({route: {params: {token}}}) => {
+const PreferencesScreen = ({
+  route: {
+    params: { token },
+  },
+}) => {
   const [artists, setArtists] = useState([]);
 
   function getArtists() {
@@ -10,10 +21,10 @@ const PreferencesScreen = ({route: {params: {token}}}) => {
       .get("https://api.spotify.com/v1/me/top/artists", {
         params: { limit: 50, offset: 0 },
         headers: {
-          Authorization: "Bearer " + token
+          Authorization: "Bearer " + token,
         },
       })
-      .then(({data: {items}}) => {
+      .then(({ data: { items } }) => {
         setArtists(items);
       })
       .catch((err) => {
@@ -22,11 +33,19 @@ const PreferencesScreen = ({route: {params: {token}}}) => {
   }
   return (
     <SafeAreaView>
-      <Text>{token}</Text>
-      <Button onPress={getArtists} title="getArtists" />
-      {artists.map((artist) => {
-        return <Text key={artist.id}>{artist.name}</Text>
-      })}
+      <ScrollView>
+        <Text>{token}</Text>
+        <Button onPress={getArtists} title="getArtists" />
+        {artists.map((artist) => {
+          return (
+            <SafeAreaView>
+              <Text key={artist.id}>{artist.name}</Text>
+              <Text key={artist.id}>{artist.genres.slice(0, 3) + " "}</Text>
+            </SafeAreaView>
+          );
+        })}
+        <SearchScreen/>
+      </ScrollView>
     </SafeAreaView>
   );
 };
