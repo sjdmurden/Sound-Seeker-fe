@@ -12,6 +12,7 @@ import FestivalCard from "./FestivalCard";
 import { SegmentedButtons } from "react-native-paper";
 import { SelectList } from "react-native-dropdown-select-list";
 import * as Location from "expo-location";
+import Loading from "./Loading";
 
 const SearchScreen = () => {
   const [festivalQuery, setFestivalQuery] = useState("");
@@ -19,6 +20,9 @@ const SearchScreen = () => {
   const [value, setValue] = useState("");
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState();
+  const [noFestivalInLocation, setNoFestivalInLocation] = useState(false);
+  const [artistPlaying, setArtistPlaying] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const data = [
     { key: 20, value: "up to 20 miles" },
@@ -42,14 +46,17 @@ const SearchScreen = () => {
     };
     getPermissions();
   }, []);
-  
+
   function handleFestivalSearch() {
+    setIsLoading(true);
     if (value === "festival") {
       searchAllFestivals(festivalQuery).then((response) => {
         if (response.data.results.length > 0) {
           setFestivalResult(response.data.results);
+          setIsLoading(false);
         } else {
-          setFestivalResult("No festival found");
+          setFestivalResult([]);
+          setIsLoading(false);
         }
         setFestivalQuery("");
       });
@@ -59,10 +66,18 @@ const SearchScreen = () => {
         const artistId = response.data.results[0].id;
         if (artistId) {
           getFestivalByArtist(artistId).then((response) => {
-            setFestivalResult(response.data.results);
+            if (response.data.results.length === 0) {
+              setArtistPlaying(false);
+              setIsLoading(false);
+            } else {
+              setArtistPlaying(true);
+              setFestivalResult(response.data.results);
+              setIsLoading(false);
+            }
           });
         } else {
-          setFestivalResult("No festival found");
+          setFestivalResult([]);
+          setIsLoading(false);
         }
         setFestivalQuery("");
       });
@@ -72,12 +87,18 @@ const SearchScreen = () => {
         setFestivalResult(response.data.results);
         if (response.data.results.length > 0) {
           setFestivalResult(response.data.results);
+          setIsLoading(false);
         } else {
-          setFestivalResult("No festival found");
+          setFestivalResult([]);
+          setIsLoading(false);
+          setNoFestivalInLocation(true);
         }
         setFestivalQuery("");
       });
     }
+  }
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
@@ -116,12 +137,17 @@ const SearchScreen = () => {
             onSelect={handleFestivalSearch}
           />
         )}
-        <ScrollView>
-          {Object.keys(festivalResult).length > 0 &&
-            festivalResult.map((festival) => {
-              return <FestivalCard key={festival.id} festival={festival} />;
-            })}
-        </ScrollView>
+        {artistPlaying || noFestivalInLocation ? (
+          <ScrollView>
+            {Object.keys(festivalResult).length > 0 &&
+              festivalResult.map((festival) => {
+                return <FestivalCard key={festival.id} festival={festival} />;
+              })}
+          </ScrollView>
+        ) : (
+          <Text> Sorry, no festivals match your search</Text>
+          //need to debug no one playing in location
+        )}
       </SafeAreaView>
     </SafeAreaView>
   );
