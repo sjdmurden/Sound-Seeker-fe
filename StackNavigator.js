@@ -10,6 +10,9 @@ import LoginScreen from "./Screens/LoginScreen";
 import SearchScreen from "./Screens/SearchScreen.js";
 import FestivalCard from "./Screens/FestivalCard.js";
 import FestivalPage from "./Screens/FestivalPage.js";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "./Contexts/user.js";
 
 const Tab = createBottomTabNavigator();
 
@@ -58,15 +61,35 @@ function BottomTabs() {
 
 const Stack = createNativeStackNavigator();
 
+
 function Navigation() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+  
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('logged-in-user-key', jsonValue);
+      return value
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    console.log("useEffect triggered", loggedInUser)
+      AsyncStorage.getItem('logged-in-user-key').then((jsonValue) => {
+        setIsLoggedIn(jsonValue != undefined)
+      }).catch((err) => {
+        console.log(err)
+      })
+  },[loggedInUser])
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
+        {isLoggedIn ?  
+        <>
         <Stack.Screen
           name="main"
           component={BottomTabs}
@@ -87,6 +110,14 @@ function Navigation() {
           component={FestivalPage}
           options={{ headerShown: true }}
         />
+        </>
+        :
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        }
       </Stack.Navigator>
     </NavigationContainer>
   );
