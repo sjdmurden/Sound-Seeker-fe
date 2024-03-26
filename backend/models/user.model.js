@@ -103,6 +103,7 @@ async function saveUser({ code }) {
 }
 
 async function fetchUser(id) {
+  console.log(clientId)
   await connect();
   try {
     const user = await User.findOne({ id });
