@@ -3,7 +3,6 @@ import { Card, Text } from "react-native-paper";
 
 function FestivalPage({ route }) {
   const festival = route.params.selectedFestival;
-
   return (
     <ScrollView>
       <Card>
@@ -13,7 +12,7 @@ function FestivalPage({ route }) {
           <Text variant="bodyMedium">{festival.venue.address}</Text>
           <Text variant="bodyMedium">{festival.startdate}</Text>
           <Text variant="bodyMedium">
-            #{festival.genres[0].name}, #{festival.genres[1].name},{" "}
+            #{festival.genres[0].name}, #{festival.genres[1].name},
             #{festival.genres[2].name}
           </Text>
           <Text variant="titleMedium">Line Up</Text>
