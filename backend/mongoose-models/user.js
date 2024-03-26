@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   expiry_date: { type: Number, required: true },
   top_artists: { type: Array, required: true },
   top_genres: { type: Array, required: true },
+  id: { type: String, require: true },
 });
 const User = mongoose.model("User", userSchema);
 

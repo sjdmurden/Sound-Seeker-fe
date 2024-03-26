@@ -59,7 +59,6 @@ async function getTopArtists(access_token) {
       },
     })
     .then(({ data: { items } }) => {
-      console.log(items);
       return items;
     });
 }
@@ -104,20 +103,25 @@ async function saveUser({ code }) {
 }
 
 async function fetchUser(id) {
-  connect();
-  const user = await User.findOne({ id });
-  if (Date.now() >= user.expiry_date) {
-    const tokenData = await getRefreshTokenData(user.refresh_token);
-    await User.findOneAndUpdate(
-      { id },
-      {
-        access_token: tokenData.access_token,
-        expiry_date: Date.now() + tokenData.expires_in * 1000,
-      }
-    );
+  await connect();
+  try {
+    const user = await User.findOne({ id });
+    if (Date.now() >= user.expiry_date) {
+      const tokenData = await getRefreshTokenData(user.refresh_token);
+      await User.findOneAndUpdate(
+        { id },
+        {
+          access_token: tokenData.access_token,
+          expiry_date: Date.now() + tokenData.expires_in * 1000,
+        }
+      );
+    }
+    mongoose.disconnect();
+    return user;
+  } catch (err) {
+    console.log(err);
   }
   mongoose.disconnect();
-  return user;
 }
 
 module.exports = { saveUser, fetchUser };

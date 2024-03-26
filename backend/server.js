@@ -8,7 +8,9 @@ app.post('/api/users', postUser);
 
 app.get('/api/users/:id', getUser);
 
-
+app.get('/api/healthCheck', (req,res)=>{
+    res.status(200).send({msg:"server live"})
+})
 
 app.listen(9090, () => {
     console.log('Server started on port 9090');
