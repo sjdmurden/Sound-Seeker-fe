@@ -64,11 +64,13 @@ async function getTopArtists(access_token) {
     });
 }
 
-async function saveUser(body) {
+async function saveUser({ code }) {
   connect();
-  const tokenData = await getFirstTokenData(body.code);
-  const userDetails = await getUserDetails(tokenData.access_token);
-  const topArtists = await getTopArtists(tokenData.access_token);
+  const { access_token, refresh_token, expires_in } = await getFirstTokenData(
+    code
+  );
+  const { id, display_name, image } = await getUserDetails(access_token);
+  const topArtists = await getTopArtists(access_token);
 
   const topGenresObj = {};
   topArtists.forEach((artist) => {
@@ -86,12 +88,12 @@ async function saveUser(body) {
   });
 
   const newBody = {
-    id: userDetails.id,
-    display_name: userDetails.display_name,
-    image: userDetails.image,
-    access_token: tokenData.access_token,
-    refresh_token: tokenData.refresh_token,
-    expiry_date: Date.now() + tokenData.expires_in * 1000,
+    id: id,
+    display_name: display_name,
+    image: image,
+    access_token: access_token,
+    refresh_token: refresh_token,
+    expiry_date: Date.now() + expires_in * 1000,
     top_artists: topArtists.map((artist) => artist.name),
     top_genres: topGenresArr,
   };

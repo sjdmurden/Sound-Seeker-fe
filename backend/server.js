@@ -6,7 +6,7 @@ app.use(express.json());
 
 app.post('/api/users', postUser);
 
-app.get('/api/users/:username', getUser);
+app.get('/api/users/:id', getUser);
 
 
 

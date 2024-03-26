@@ -11,8 +11,8 @@ function postUser(req, res) {
 }
 
 function getUser(req, res) {
-    const {username} = req.params
-    fetchUser(username).then((user) => {
+    const {id} = req.params
+    fetchUser(id).then((user) => {
         res.status(200).send({user})
     })
 }
