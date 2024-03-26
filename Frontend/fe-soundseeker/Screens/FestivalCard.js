@@ -7,7 +7,7 @@ const FestivalCard = ({ festival }) => {
   return (
     <Button
       onPress={() => {
-        navigation.navigate("FestivalPage", {selectedFestival: festival});
+        navigation.navigate("FestivalPage", { selectedFestival: festival });
       }}
     >
       <Card>

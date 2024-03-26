@@ -75,17 +75,17 @@ function Navigation() {
         <Stack.Screen
           name="SearchScreen"
           component={SearchScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="FestivalCard"
           component={FestivalCard}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="FestivalPage"
           component={FestivalPage}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
       </Stack.Navigator>
     </NavigationContainer>
