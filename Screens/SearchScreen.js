@@ -1,20 +1,22 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet, TextInput, Text, ScrollView } from "react-native";
 import { searchAllFestivals, getArtistId, getFestivalByArtist } from "../api";
 import FestivalCard from "./FestivalCard";
 import { SegmentedButtons } from "react-native-paper";
 import { SelectList } from "react-native-dropdown-select-list";
+import * as Location from "expo-location";
 
 const SearchScreen = () => {
   const [festivalQuery, setFestivalQuery] = useState("");
   const [festivalResult, setFestivalResult] = useState("");
   const [value, setValue] = useState("");
   const [selected, setSelected] = useState("");
+  const [location, setLocation] = useState();
 
   const data = [
-    { key: 20, value: "up to 20 miles" },
+    { key: "20", value: "up to 20 miles" },
     { key: "40", value: "up to 40 miles" },
     { key: "60", value: "up to 60 miles" },
     { key: "80", value: "up to 80 miles" },
@@ -22,6 +24,19 @@ const SearchScreen = () => {
     { key: "GB", value: "Countrywide" },
   ];
 
+  useEffect(() => {
+    const getPermissions = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Please grant location permissions");
+        return;
+      }
+
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      setLocation(currentLocation);
+    };
+    getPermissions();
+  }, []);
 
   function handleFestivalSearch() {
     if (value === "festival") {
@@ -46,6 +61,9 @@ const SearchScreen = () => {
         }
         setFestivalQuery("");
       });
+    }
+    if (value === "location") {
+      
     }
   }
 

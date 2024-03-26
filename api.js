@@ -30,18 +30,4 @@ export const getFestivalByArtist = (artistId) => {
     });
 };
 
-// function getArtists() {
-//     axios
-//       .get("https://api.spotify.com/v1/me/top/artists", {
-//         params: { limit: 50, offset: 0 },
-//         headers: {
-//           Authorization: "Bearer " + token,
-//         },
-//       })
-//       .then(({ data: { items } }) => {
-//         return items;
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   }
+
