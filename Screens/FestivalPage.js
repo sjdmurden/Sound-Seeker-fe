@@ -18,7 +18,7 @@ function FestivalPage({ route }) {
           </Text>
           <Text variant="titleMedium">Line Up</Text>
           {festival.artists.map((artist) => {
-            return <Text key={artist.id} variant="bodyMedium">{artist.name}</Text>;
+            return <Text key={artist.artistid} variant="bodyMedium">{artist.name}</Text>;
           })}
         </Card.Content>
       </Card>
