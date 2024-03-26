@@ -37,7 +37,6 @@ const SearchScreen = () => {
     if (value === "artist") {
       getArtistId(festivalQuery).then((response) => {
         const artistId = response.data.results[0].id;
-        console.log(response.data);
         if (artistId) {
           getFestivalByArtist(artistId).then((response) => {
             setFestivalResult(response.data.results);
