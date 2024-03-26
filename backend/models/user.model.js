@@ -64,7 +64,7 @@ async function getTopArtists(access_token) {
 }
 
 async function saveUser({ code }) {
-  connect();
+  await connect();
   const { access_token, refresh_token, expires_in } = await getFirstTokenData(
     code
   );
@@ -103,7 +103,6 @@ async function saveUser({ code }) {
 }
 
 async function fetchUser(id) {
-  console.log(clientId)
   await connect();
   try {
     const user = await User.findOne({ id });
