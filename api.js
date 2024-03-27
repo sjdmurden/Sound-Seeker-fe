@@ -52,3 +52,7 @@ export const getFestivalByLocation = (location, radius) => {
       throw err;
     });
 };
+
+
+
+

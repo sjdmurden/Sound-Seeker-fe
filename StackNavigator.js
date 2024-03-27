@@ -8,9 +8,9 @@ import HomeScreen from "./Screens/HomeScreen";
 import { Text } from "react-native";
 import LoginScreen from "./Screens/LoginScreen";
 import SearchScreen from "./Screens/SearchScreen.js";
-import FestivalCard from "./Screens/FestivalCard.js";
+import FestivalList from "./Screens/FestivalList.js";
 import FestivalPage from "./Screens/FestivalPage.js";
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 import { useEffect, useContext } from "react";
 import { UserContext } from "./Contexts/user.js";
 
@@ -61,56 +61,54 @@ function BottomTabs() {
 
 const Stack = createNativeStackNavigator();
 
-
 function Navigation() {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
   useEffect(() => {
-    SecureStore.getItemAsync('logged-in-user-key')
+    SecureStore.getItemAsync("logged-in-user-key")
       .then((jsonUser) => {
-        if (jsonUser)
-        {
+        if (jsonUser) {
           setLoggedInUser(JSON.parse(jsonUser));
         }
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }, [])
+        console.log(err);
+      });
+  }, []);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {loggedInUser ?  
-        <>
-        <Stack.Screen
-          name="main"
-          component={BottomTabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SearchScreen"
-          component={SearchScreen}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="FestivalCard"
-          component={FestivalCard}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="FestivalPage"
-          component={FestivalPage}
-          options={{ headerShown: true }}
-        />
-        </>
-        :
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        }
+        {loggedInUser ? (
+          <>
+            <Stack.Screen
+              name="main"
+              component={BottomTabs}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SearchScreen"
+              component={SearchScreen}
+              options={{ headerShown: true }}
+            />
+            <Stack.Screen
+              name="FestivalList"
+              component={FestivalList}
+              options={{ headerShown: true }}
+            />
+            <Stack.Screen
+              name="FestivalPage"
+              component={FestivalPage}
+              options={{ headerShown: true }}
+            />
+          </>
+        ) : (
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

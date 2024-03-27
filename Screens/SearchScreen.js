@@ -7,8 +7,9 @@ import {
   getArtistId,
   getFestivalByArtist,
   getFestivalByLocation,
+  getTopArtists,
 } from "../api";
-import FestivalCard from "./FestivalCard";
+import FestivalList from "./FestivalList";
 import { SegmentedButtons } from "react-native-paper";
 import { SelectList } from "react-native-dropdown-select-list";
 import * as Location from "expo-location";
@@ -84,7 +85,6 @@ const SearchScreen = () => {
           setFestivalQuery("");
         })
         .catch((err) => {
-          console.log(err);
           setIsLoading(false);
           setError(true);
         });
@@ -125,7 +125,9 @@ const SearchScreen = () => {
               value: "artist",
               label: "Artist",
             },
-            { value: "location", label: "Location" },
+            { value: "location", 
+              label: "Location" 
+            },
           ]}
         />
       </SafeAreaView>
@@ -150,7 +152,7 @@ const SearchScreen = () => {
           <ScrollView>
             {Object.keys(festivalResult).length > 0 &&
               festivalResult.map((festival) => {
-                return <FestivalCard key={festival.id} festival={festival} />;
+                return <FestivalList key={festival.id} festival={festival} />;
               })}
           </ScrollView>
         ) : (

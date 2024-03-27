@@ -30,6 +30,7 @@ function LoginScreen({ navigation }) {
   useEffect(() => {
     if (response?.type === "success") {
       const { code } = response.params;
+      console.log(code)
       axios.post('https://sound-seeker.onrender.com/api/users/', {code})
         .then(({data: {user: {id, display_name, image}}}) => {
           const newUser = {id, display_name, image};

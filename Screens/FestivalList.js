@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Button, Card, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { Compatibility } from "../Compatibility";
 
-const FestivalCard = ({ festival }) => {
+const FestivalList = ({ festival }) => {
   const navigation = useNavigation();
-  
+  console.log('in fest list');
   return (
     <Button
       onPress={() => {
@@ -16,6 +17,7 @@ const FestivalCard = ({ festival }) => {
           <Text variant="titleLarge">{festival.eventname}</Text>
           <Text variant="bodyMedium">{festival.venue.address}</Text>
           <Text variant="bodyMedium">{festival.startdate}</Text>
+          <Compatibility festival={festival}/>
         </Card.Content>
         <Card.Cover src={festival.xlargeimageurl} />
         <Card.Actions></Card.Actions>
@@ -24,4 +26,4 @@ const FestivalCard = ({ festival }) => {
   );
 };
 
-export default FestivalCard;
+export default FestivalList;
