@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const FestivalCard = ({ festival }) => {
   const navigation = useNavigation();
+  
   return (
     <Button
       onPress={() => {
