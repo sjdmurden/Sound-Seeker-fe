@@ -4,7 +4,7 @@ import { useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { UserContext } from "../Contexts/user";
 
 const discovery = {
@@ -26,25 +26,16 @@ function LoginScreen({ navigation }) {
     },
     discovery
   );
-  
-  const storeData = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem('logged-in-user-key', jsonValue);
-      return value
-    }catch(err){
-      console.log(err)
-    }
-  }
 
   useEffect(() => {
     if (response?.type === "success") {
       const { code } = response.params;
       axios.post('https://sound-seeker.onrender.com/api/users/', {code})
         .then(({data: {user: {id, display_name, image}}}) => {
-          return storeData({id, display_name, image})
-        }).then((user) => {
-          setLoggedInUser(user)
+          const newUser = {id, display_name, image};
+          const jsonUser = JSON.stringify(newUser);
+          SecureStore.setItemAsync('logged-in-user-key', jsonUser);
+          setLoggedInUser(newUser);
         })
     }
   }, [response]);

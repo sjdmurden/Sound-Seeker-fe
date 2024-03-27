@@ -10,8 +10,8 @@ import LoginScreen from "./Screens/LoginScreen";
 import SearchScreen from "./Screens/SearchScreen.js";
 import FestivalCard from "./Screens/FestivalCard.js";
 import FestivalPage from "./Screens/FestivalPage.js";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState, useContext } from "react";
+import * as SecureStore from 'expo-secure-store';
+import { useEffect, useContext } from "react";
 import { UserContext } from "./Contexts/user.js";
 
 const Tab = createBottomTabNavigator();
@@ -63,32 +63,25 @@ const Stack = createNativeStackNavigator();
 
 
 function Navigation() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
-  
-  const storeData = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem('logged-in-user-key', jsonValue);
-      return value
-    }catch(err){
-      console.log(err)
-    }
-  }
 
   useEffect(() => {
-    console.log("useEffect triggered", loggedInUser)
-      AsyncStorage.getItem('logged-in-user-key').then((jsonValue) => {
-        setIsLoggedIn(jsonValue != undefined)
-      }).catch((err) => {
+    SecureStore.getItemAsync('logged-in-user-key')
+      .then((jsonUser) => {
+        if (jsonUser)
+        {
+          setLoggedInUser(JSON.parse(jsonUser));
+        }
+      })
+      .catch((err) => {
         console.log(err)
       })
-  },[loggedInUser])
+  }, [])
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {isLoggedIn ?  
+        {loggedInUser ?  
         <>
         <Stack.Screen
           name="main"
