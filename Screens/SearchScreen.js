@@ -24,6 +24,7 @@ const SearchScreen = () => {
   const [noResult, setNoResult] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [showCompatibility, setShowCompatibility] = useState(false)
 
   const data = [
     { key: 20, value: "up to 20 miles" },
@@ -51,9 +52,11 @@ const SearchScreen = () => {
     setNoResult(false);
     setFestivalResult("");
     setError(false);
+    setShowCompatibility(false)
   }, [value]);
 
   function handleFestivalSearch() {
+    setShowCompatibility(true)
     setIsLoading(true);
     if (value === "festival") {
       searchAllFestivals(festivalQuery).then((response) => {
@@ -152,7 +155,7 @@ const SearchScreen = () => {
           <ScrollView>
             {Object.keys(festivalResult).length > 0 &&
               festivalResult.map((festival) => {
-                return <FestivalList key={festival.id} festival={festival} />;
+                return <FestivalList key={festival.id} festival={festival} showCompatibility={showCompatibility}/>;
               })}
           </ScrollView>
         ) : (

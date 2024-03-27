@@ -1,7 +1,6 @@
 const axios = require('axios')
 
 export async function getArtistInfo(artist_id) {
-   console.log('start of api func');
    return axios
       .get("https://sound-seeker.onrender.com/api/users/8bks0ji4pz8nny17ddas1c939")
       .then(({data: {user}}) => {
