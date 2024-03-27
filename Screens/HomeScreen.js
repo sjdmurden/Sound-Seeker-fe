@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { SearchScreen } from './SearchScreen'
+import SearchScreen from './SearchScreen'
 
 const HomeScreen = () => {
   return (

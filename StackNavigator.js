@@ -10,6 +10,9 @@ import LoginScreen from "./Screens/LoginScreen";
 import SearchScreen from "./Screens/SearchScreen.js";
 import FestivalCard from "./Screens/FestivalCard.js";
 import FestivalPage from "./Screens/FestivalPage.js";
+import * as SecureStore from 'expo-secure-store';
+import { useEffect, useContext } from "react";
+import { UserContext } from "./Contexts/user.js";
 
 const Tab = createBottomTabNavigator();
 
@@ -58,15 +61,28 @@ function BottomTabs() {
 
 const Stack = createNativeStackNavigator();
 
+
 function Navigation() {
+  const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+
+  useEffect(() => {
+    SecureStore.getItemAsync('logged-in-user-key')
+      .then((jsonUser) => {
+        if (jsonUser)
+        {
+          setLoggedInUser(JSON.parse(jsonUser));
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
+        {loggedInUser ?  
+        <>
         <Stack.Screen
           name="main"
           component={BottomTabs}
@@ -87,6 +103,14 @@ function Navigation() {
           component={FestivalPage}
           options={{ headerShown: true }}
         />
+        </>
+        :
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        }
       </Stack.Navigator>
     </NavigationContainer>
   );
