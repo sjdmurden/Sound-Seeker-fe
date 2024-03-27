@@ -17,7 +17,7 @@ import Loading from "./Loading";
 const SearchScreen = () => {
   const [festivalQuery, setFestivalQuery] = useState("");
   const [festivalResult, setFestivalResult] = useState("");
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState("festival");
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState();
   const [noResult, setNoResult] = useState(false);
@@ -49,7 +49,7 @@ const SearchScreen = () => {
   useEffect(() => {
     setNoResult(false);
     setFestivalResult("");
-    setError(false)
+    setError(false);
   }, [value]);
 
   function handleFestivalSearch() {
@@ -85,9 +85,8 @@ const SearchScreen = () => {
         })
         .catch((err) => {
           console.log(err);
-          setIsLoading(false)
-          setError(true)
-          
+          setIsLoading(false);
+          setError(true);
         });
       setFestivalQuery("");
     }

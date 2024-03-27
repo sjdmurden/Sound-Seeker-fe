@@ -11,13 +11,19 @@ function FestivalPage({ route }) {
           <Text variant="titleLarge">{festival.eventname}</Text>
           <Text variant="bodyMedium">{festival.venue.address}</Text>
           <Text variant="bodyMedium">{festival.startdate}</Text>
-          <Text variant="bodyMedium">
-            #{festival.genres[0].name}, #{festival.genres[1].name},
-            #{festival.genres[2].name}
-          </Text>
+          {festival.genres &&
+            festival.genres.slice(0, 4).map((genre) => {
+              return <Text  key={genre.genreid} variant="bodyMedium">#{genre.name}</Text>;
+            })}
+
           <Text variant="titleMedium">Line Up</Text>
+
           {festival.artists.map((artist) => {
-            return <Text key={artist.artistid} variant="bodyMedium">{artist.name}</Text>;
+            return (
+              <Text key={artist.artistid} variant="bodyMedium">
+                {artist.name}
+              </Text>
+            );
           })}
         </Card.Content>
       </Card>
