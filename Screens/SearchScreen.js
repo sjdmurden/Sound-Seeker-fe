@@ -20,9 +20,9 @@ const SearchScreen = () => {
   const [value, setValue] = useState("");
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState();
-  const [noFestivalInLocation, setNoFestivalInLocation] = useState(false);
-  const [artistPlaying, setArtistPlaying] = useState(true);
+  const [noResult, setNoResult] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const data = [
     { key: 20, value: "up to 20 miles" },
@@ -40,12 +40,17 @@ const SearchScreen = () => {
         console.log("Please grant location permissions");
         return;
       }
-
       let currentLocation = await Location.getCurrentPositionAsync({});
       setLocation(currentLocation);
     };
     getPermissions();
   }, []);
+
+  useEffect(() => {
+    setNoResult(false);
+    setFestivalResult("");
+    setError(false)
+  }, [value]);
 
   function handleFestivalSearch() {
     setIsLoading(true);
@@ -57,32 +62,37 @@ const SearchScreen = () => {
         } else {
           setFestivalResult([]);
           setIsLoading(false);
+          setNoResult(true);
         }
         setFestivalQuery("");
       });
     }
     if (value === "artist") {
-      getArtistId(festivalQuery).then((response) => {
-        const artistId = response.data.results[0].id;
-        if (artistId) {
+      getArtistId(festivalQuery)
+        .then((response) => {
+          const artistId = response.data.results[0].id;
           getFestivalByArtist(artistId).then((response) => {
             if (response.data.results.length === 0) {
-              setArtistPlaying(false);
+              setNoResult(true);
               setIsLoading(false);
             } else {
-              setArtistPlaying(true);
+              setNoResult(false);
               setFestivalResult(response.data.results);
               setIsLoading(false);
             }
           });
-        } else {
-          setFestivalResult([]);
-          setIsLoading(false);
-        }
-        setFestivalQuery("");
-      });
+          setFestivalQuery("");
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false)
+          setError(true)
+          
+        });
+      setFestivalQuery("");
     }
     if (value === "location") {
+      setNoResult(false);
       getFestivalByLocation(location, radius).then((response) => {
         setFestivalResult(response.data.results);
         if (response.data.results.length > 0) {
@@ -91,7 +101,7 @@ const SearchScreen = () => {
         } else {
           setFestivalResult([]);
           setIsLoading(false);
-          setNoFestivalInLocation(true);
+          setNoResult(true);
         }
         setFestivalQuery("");
       });
@@ -137,7 +147,7 @@ const SearchScreen = () => {
             onSelect={handleFestivalSearch}
           />
         )}
-        {artistPlaying || noFestivalInLocation ? (
+        {!noResult && !error ? (
           <ScrollView>
             {Object.keys(festivalResult).length > 0 &&
               festivalResult.map((festival) => {
@@ -145,8 +155,7 @@ const SearchScreen = () => {
               })}
           </ScrollView>
         ) : (
-          <Text> Sorry, no festivals match your search</Text>
-          //need to debug no one playing in location
+          <Text> {`Sorry, no ${value}s match your search`}</Text>
         )}
       </SafeAreaView>
     </SafeAreaView>

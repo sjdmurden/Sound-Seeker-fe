@@ -7,6 +7,9 @@ export const searchAllFestivals = (festival_name) => {
     )
     .then((response) => {
       return response;
+    })
+    .catch((err) => {
+      throw err;
     });
 };
 
@@ -17,6 +20,9 @@ export const getArtistId = (artist) => {
     )
     .then((response) => {
       return response;
+    })
+    .catch((err) => {
+      throw err;
     });
 };
 
@@ -27,6 +33,9 @@ export const getFestivalByArtist = (artistId) => {
     )
     .then((response) => {
       return response;
+    })
+    .catch((err) => {
+      throw err;
     });
 };
 
@@ -38,5 +47,8 @@ export const getFestivalByLocation = (location, radius) => {
     )
     .then((response) => {
       return response;
+    })
+    .catch((err) => {
+      throw err;
     });
 };
