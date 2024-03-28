@@ -42,7 +42,7 @@ function Navigation() {
             <Stack.Screen
               name="FestivalPage"
               component={FestivalPage}
-              options={{ headerShown: false}}
+              options={{ headerShown: true}}
             />
           </>
         ) : (

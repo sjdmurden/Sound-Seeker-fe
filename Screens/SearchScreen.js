@@ -13,6 +13,8 @@ import { SegmentedButtons } from "react-native-paper";
 import { SelectList } from "react-native-dropdown-select-list";
 import * as Location from "expo-location";
 import Loading from "./Loading";
+import { useContext } from "react";
+import { UserContext } from "../Contexts/user";
 
 const SearchScreen = () => {
   const [input, setInput] = useState("");
@@ -21,7 +23,8 @@ const SearchScreen = () => {
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState();
   const [error, setError] = useState("");
-  console.log("search")
+  const [isLoading, setIsLoading] = useState(false)
+
   const data = [
     { key: 20, value: "up to 20 miles" },
     { key: 40, value: "up to 40 miles" },
@@ -49,6 +52,7 @@ const SearchScreen = () => {
   }, [selectedTab]);
 
   function handleFestivalSearch() {
+    setIsLoading(true)
     if (selectedTab === "festival") {
       searchAllFestivals(input).then((response) => {
         const results = response.data.results;
@@ -135,17 +139,14 @@ const SearchScreen = () => {
             onSelect={handleFestivalSearch}
           />
         )}
-        {Object.keys(festivalResult).length > 0 ? 
-          festivalResult.every((festival) => festival.isLoaded) ?
-            <ScrollView>
-              {festivalResult.map((festival, index) => {
-                  return <FestivalList key={festival.id} festival={festival} festivalIndex={index} setFestivalResult={setFestivalResult}/>;
-                })}
-            </ScrollView>
-            :
-            <Loading />
-          :
-          <Text>{error}</Text>}
+        <FestivalList
+          festivalResult={festivalResult}
+          setFestivalResult={setFestivalResult}
+          error={error}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
+        
       </SafeAreaView>
     </SafeAreaView>
   );

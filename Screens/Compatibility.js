@@ -21,14 +21,7 @@ export const Compatibility = ({ festival, festivalIndex, setFestivalResult }) =>
     });
   }
 
-  getArtistInfo(artistsId, loggedInUser).then((response) => {
-    setFestivalResult((currentResult) => {
-      const resultCopy = JSON.parse(JSON.stringify(currentResult));
-      resultCopy[festivalIndex].isLoaded = true;
-      return resultCopy;
-    })
-    return response;
-  });
+
 
   return <Text>Compatibility page</Text>;
 };
