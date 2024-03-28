@@ -64,14 +64,15 @@ export const getFestivalByLocation = (location, radius) => {
 export const getArtistInfo = (artistsId, loggedInUser) => {
   return axios
     .get(`https://sound-seeker.onrender.com/api/users/${loggedInUser.id}`)
-    .then(({ data }) => {
+    .then(({ data : {user} }) => {
       //add user back in
-      console.log(data);
       spotifyApi.setAccessToken(user.access_token);
       return spotifyApi.getArtists(artistsId);
     })
     .then((data) => {
-      console.log("Artists information", data.body);
+      return data.body.artists.map((artist)=>{
+        return artist.genres
+      })
     })
     .catch((err) => {
       console.log(err);

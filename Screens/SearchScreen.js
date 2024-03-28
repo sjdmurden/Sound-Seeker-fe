@@ -15,14 +15,14 @@ import * as Location from "expo-location";
 import Loading from "./Loading";
 
 const SearchScreen = () => {
-  const [festivalQuery, setFestivalQuery] = useState("");
-  const [festivalResult, setFestivalResult] = useState("");
-  const [value, setValue] = useState("festival");
+  const [input, setInput] = useState("");
+  const [festivalResult, setFestivalResult] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("festival");
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState();
-  const [noResult, setNoResult] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  console.log("search")
   const data = [
     { key: 20, value: "up to 20 miles" },
     { key: 40, value: "up to 40 miles" },
@@ -33,10 +33,10 @@ const SearchScreen = () => {
   ];
 
   useEffect(() => {
+    console.log("llocation")
     const getPermissions = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        console.log("Please grant location permissions");
         return;
       }
       let currentLocation = await Location.getCurrentPositionAsync({});
@@ -46,62 +46,59 @@ const SearchScreen = () => {
   }, []);
 
   useEffect(() => {
-    setNoResult("");
+    setError("");
     setFestivalResult("");
-  }, [value]);
+  }, [selectedTab]);
 
   function handleFestivalSearch() {
     setIsLoading(true);
-    if (value === "festival") {
-      searchAllFestivals(festivalQuery).then((response) => {
+    if (selectedTab === "festival") {
+      searchAllFestivals(input).then((response) => {
         if (response.data.results.length > 0) {
           setFestivalResult(response.data.results);
           setIsLoading(false);
         } else {
           setFestivalResult([]);
           setIsLoading(false);
-          setNoResult("Sorry, no festival matches your search");
+          setError("Sorry, no festival matches your search");
         }
-        setFestivalQuery("");
+        setInput("");
       });
     }
-    if (value === "artist") {
-      getArtistId(festivalQuery)
+    if (selectedTab === "artist") {
+      getArtistId(input)
         .then((response) => {
           const artistId = response.data.results[0].id;
           getFestivalByArtist(artistId).then((response) => {
             if (response.data.results.length === 0) {
-              setNoResult(
+              setError(
                 "Sorry, the artist is not currently playing any festivals"
               );
               setIsLoading(false);
             } else {
-              setNoResult("");
+              setError("");
               setFestivalResult(response.data.results);
               setIsLoading(false);
             }
           });
-          setFestivalQuery("");
         })
         .catch((err) => {
           setIsLoading(false);
-          setNoResult("Sorry, no artist matches your search");
+          setError("Sorry, no artist matches your search");
         });
-      setFestivalQuery("");
+      setInput("");
     }
-    if (value === "location") {
-      setNoResult(false);
+    if (selectedTab === "location") {
       getFestivalByLocation(location, radius).then((response) => {
         setFestivalResult(response.data.results);
         if (response.data.results.length > 0) {
           setFestivalResult(response.data.results);
           setIsLoading(false);
         } else {
-          setFestivalResult([]);
           setIsLoading(false);
-          setNoResult("Sorry, there are no festivals within this distance");
+          setError("Sorry, there are no festivals within this distance");
         }
-        setFestivalQuery("");
+        setInput("");
       });
     }
   }
@@ -113,8 +110,8 @@ const SearchScreen = () => {
     <SafeAreaView>
       <SafeAreaView>
         <SegmentedButtons
-          value={value}
-          onValueChange={setValue}
+          value={selectedTab}
+          onValueChange={setSelectedTab}
           buttons={[
             {
               value: "festival",
@@ -129,11 +126,11 @@ const SearchScreen = () => {
         />
       </SafeAreaView>
       <SafeAreaView>
-        {value !== "location" ? (
+        {selectedTab !== "location" ? (
           <TextInput
             placeholder="Search..."
-            value={festivalQuery}
-            onChangeText={setFestivalQuery}
+            value={input}
+            onChangeText={setInput}
             onSubmitEditing={handleFestivalSearch}
             style={styles.searchBox}
           />
@@ -145,15 +142,14 @@ const SearchScreen = () => {
             onSelect={handleFestivalSearch}
           />
         )}
-        {!noResult ? (
+        {Object.keys(festivalResult).length > 0 ? (
           <ScrollView>
-            {Object.keys(festivalResult).length > 0 &&
-              festivalResult.map((festival) => {
-                return <FestivalList key={festival.id} festival={festival} />;
+            {festivalResult.map((festival) => {
+                return <FestivalList key={festival.id} festival={festival} setIsLoading={setIsLoading}/>;
               })}
           </ScrollView>
         ) : (
-          <Text>{noResult}</Text>
+          <Text>{error}</Text>
         )}
       </SafeAreaView>
     </SafeAreaView>
