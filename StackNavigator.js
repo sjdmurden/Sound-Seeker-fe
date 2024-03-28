@@ -4,60 +4,13 @@ import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "./Screens/HomeScreen";
-
 import { Text } from "react-native";
 import LoginScreen from "./Screens/LoginScreen";
 import SearchScreen from "./Screens/SearchScreen.js";
-import FestivalList from "./Screens/FestivalList.js";
 import FestivalPage from "./Screens/FestivalPage.js";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useContext } from "react";
 import { UserContext } from "./Contexts/user.js";
-
-const Tab = createBottomTabNavigator();
-
-function BottomTabs() {
-  return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: {
-          backgroundColor: "green",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          position: "absolute",
-        },
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: "Home",
-          headerShown: false,
-          tabBarLabelStyle: { color: "white" },
-          tabBarIcon: ({ focused }) =>
-            focused ? (
-              <Entypo name="home" size={24} color="black" />
-            ) : (
-              <AntDesign name="home" size={24} color="black" />
-            ),
-        }}
-      />
-      <Tab.Screen
-        name="SearchScreen"
-        component={SearchScreen}
-        options={{
-          tabBarLabel: "Home",
-          headerShown: false,
-          tabBarLabelStyle: { color: "white" },
-          tabBarIcon: ({ focused }) =>
-            focused ? <Text>Icon One</Text> : <Text>Icon Two</Text>,
-        }}
-      />
-    </Tab.Navigator>
-  );
-}
 
 const Stack = createNativeStackNavigator();
 
@@ -82,24 +35,14 @@ function Navigation() {
         {loggedInUser ? (
           <>
             <Stack.Screen
-              name="main"
-              component={BottomTabs}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SearchScreen"
-              component={SearchScreen}
-              options={{ headerShown: true }}
-            />
-            <Stack.Screen
-              name="FestivalList"
-              component={FestivalList}
-              options={{ headerShown: true }}
+              name="Home"
+              component={HomeScreen}
+              options={{ headerShown: false}}
             />
             <Stack.Screen
               name="FestivalPage"
               component={FestivalPage}
-              options={{ headerShown: true }}
+              options={{ headerShown: false}}
             />
           </>
         ) : (

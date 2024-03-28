@@ -7,7 +7,6 @@ import {
   getArtistId,
   getFestivalByArtist,
   getFestivalByLocation,
-  getTopArtists,
 } from "../api";
 import FestivalList from "./FestivalList";
 import { SegmentedButtons } from "react-native-paper";
@@ -21,10 +20,8 @@ const SearchScreen = () => {
   const [value, setValue] = useState("festival");
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState();
-  const [noResult, setNoResult] = useState(false);
+  const [noResult, setNoResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [showCompatibility, setShowCompatibility] = useState(false)
 
   const data = [
     { key: 20, value: "up to 20 miles" },
@@ -49,14 +46,11 @@ const SearchScreen = () => {
   }, []);
 
   useEffect(() => {
-    setNoResult(false);
+    setNoResult("");
     setFestivalResult("");
-    setError(false);
-    setShowCompatibility(false)
   }, [value]);
 
   function handleFestivalSearch() {
-    setShowCompatibility(true)
     setIsLoading(true);
     if (value === "festival") {
       searchAllFestivals(festivalQuery).then((response) => {
@@ -66,7 +60,7 @@ const SearchScreen = () => {
         } else {
           setFestivalResult([]);
           setIsLoading(false);
-          setNoResult(true);
+          setNoResult("Sorry, no festival matches your search");
         }
         setFestivalQuery("");
       });
@@ -77,10 +71,12 @@ const SearchScreen = () => {
           const artistId = response.data.results[0].id;
           getFestivalByArtist(artistId).then((response) => {
             if (response.data.results.length === 0) {
-              setNoResult(true);
+              setNoResult(
+                "Sorry, the artist is not currently playing any festivals"
+              );
               setIsLoading(false);
             } else {
-              setNoResult(false);
+              setNoResult("");
               setFestivalResult(response.data.results);
               setIsLoading(false);
             }
@@ -89,7 +85,7 @@ const SearchScreen = () => {
         })
         .catch((err) => {
           setIsLoading(false);
-          setError(true);
+          setNoResult("Sorry, no artist matches your search");
         });
       setFestivalQuery("");
     }
@@ -103,7 +99,7 @@ const SearchScreen = () => {
         } else {
           setFestivalResult([]);
           setIsLoading(false);
-          setNoResult(true);
+          setNoResult("Sorry, there are no festivals within this distance");
         }
         setFestivalQuery("");
       });
@@ -128,9 +124,7 @@ const SearchScreen = () => {
               value: "artist",
               label: "Artist",
             },
-            { value: "location", 
-              label: "Location" 
-            },
+            { value: "location", label: "Location" },
           ]}
         />
       </SafeAreaView>
@@ -151,15 +145,15 @@ const SearchScreen = () => {
             onSelect={handleFestivalSearch}
           />
         )}
-        {!noResult && !error ? (
+        {!noResult ? (
           <ScrollView>
             {Object.keys(festivalResult).length > 0 &&
               festivalResult.map((festival) => {
-                return <FestivalList key={festival.id} festival={festival} showCompatibility={showCompatibility}/>;
+                return <FestivalList key={festival.id} festival={festival} />;
               })}
           </ScrollView>
         ) : (
-          <Text> {`Sorry, no ${value}s match your search`}</Text>
+          <Text>{noResult}</Text>
         )}
       </SafeAreaView>
     </SafeAreaView>
