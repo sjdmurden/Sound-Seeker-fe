@@ -7,24 +7,20 @@ import {
   getArtistId,
   getFestivalByArtist,
   getFestivalByLocation,
-  getTopArtists,
 } from "../api";
 import FestivalList from "./FestivalList";
 import { SegmentedButtons } from "react-native-paper";
 import { SelectList } from "react-native-dropdown-select-list";
 import * as Location from "expo-location";
-import Loading from "./Loading";
 
 const SearchScreen = () => {
-  const [festivalQuery, setFestivalQuery] = useState("");
-  const [festivalResult, setFestivalResult] = useState("");
-  const [value, setValue] = useState("festival");
+  const [input, setInput] = useState("");
+  const [festivalResult, setFestivalResult] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("festival");
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState();
-  const [noResult, setNoResult] = useState(false);
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [showCompatibility, setShowCompatibility] = useState(false)
 
   const data = [
     { key: 20, value: "up to 20 miles" },
@@ -39,7 +35,6 @@ const SearchScreen = () => {
     const getPermissions = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        console.log("Please grant location permissions");
         return;
       }
       let currentLocation = await Location.getCurrentPositionAsync({});
@@ -49,76 +44,68 @@ const SearchScreen = () => {
   }, []);
 
   useEffect(() => {
-    setNoResult(false);
+    setError("");
     setFestivalResult("");
-    setError(false);
-    setShowCompatibility(false)
-  }, [value]);
+  }, [selectedTab]);
 
   function handleFestivalSearch() {
-    setShowCompatibility(true)
-    setIsLoading(true);
-    if (value === "festival") {
-      searchAllFestivals(festivalQuery).then((response) => {
-        if (response.data.results.length > 0) {
-          setFestivalResult(response.data.results);
-          setIsLoading(false);
+    // setIsLoading(true)
+    if (selectedTab === "festival") {
+      searchAllFestivals(input).then((response) => {
+        const results = response.data.results;
+        if (results.length > 0) {
+          setError("");
+          const loadingResults = results.map((festival) => {
+            festival.isLoaded = false;
+            return festival;
+          });
+          setFestivalResult(loadingResults);
         } else {
           setFestivalResult([]);
-          setIsLoading(false);
-          setNoResult(true);
+          setError("Sorry, no festival matches your search");
         }
-        setFestivalQuery("");
+        setInput("");
       });
     }
-    if (value === "artist") {
-      getArtistId(festivalQuery)
+    if (selectedTab === "artist") {
+      getArtistId(input)
         .then((response) => {
           const artistId = response.data.results[0].id;
           getFestivalByArtist(artistId).then((response) => {
-            if (response.data.results.length === 0) {
-              setNoResult(true);
-              setIsLoading(false);
-            } else {
-              setNoResult(false);
+            if (response.data.results.length > 0) {
+              setError("");
               setFestivalResult(response.data.results);
-              setIsLoading(false);
+            } else {
+              setError(
+                "Sorry, the artist is not currently playing any festivals"
+              );
             }
           });
-          setFestivalQuery("");
         })
         .catch((err) => {
-          setIsLoading(false);
-          setError(true);
+          setError("Sorry, no artist matches your search");
         });
-      setFestivalQuery("");
+      setInput("");
     }
-    if (value === "location") {
-      setNoResult(false);
+    if (selectedTab === "location") {
       getFestivalByLocation(location, radius).then((response) => {
         setFestivalResult(response.data.results);
         if (response.data.results.length > 0) {
           setFestivalResult(response.data.results);
-          setIsLoading(false);
         } else {
-          setFestivalResult([]);
-          setIsLoading(false);
-          setNoResult(true);
+          setError("Sorry, there are no festivals within this distance");
         }
-        setFestivalQuery("");
+        setInput("");
       });
     }
-  }
-  if (isLoading) {
-    return <Loading />;
   }
 
   return (
     <SafeAreaView>
       <SafeAreaView>
         <SegmentedButtons
-          value={value}
-          onValueChange={setValue}
+          value={selectedTab}
+          onValueChange={setSelectedTab}
           buttons={[
             {
               value: "festival",
@@ -128,18 +115,16 @@ const SearchScreen = () => {
               value: "artist",
               label: "Artist",
             },
-            { value: "location", 
-              label: "Location" 
-            },
+            { value: "location", label: "Location" },
           ]}
         />
       </SafeAreaView>
       <SafeAreaView>
-        {value !== "location" ? (
+        {selectedTab !== "location" ? (
           <TextInput
             placeholder="Search..."
-            value={festivalQuery}
-            onChangeText={setFestivalQuery}
+            value={input}
+            onChangeText={setInput}
             onSubmitEditing={handleFestivalSearch}
             style={styles.searchBox}
           />
@@ -151,16 +136,12 @@ const SearchScreen = () => {
             onSelect={handleFestivalSearch}
           />
         )}
-        {!noResult && !error ? (
-          <ScrollView>
-            {Object.keys(festivalResult).length > 0 &&
-              festivalResult.map((festival) => {
-                return <FestivalList key={festival.id} festival={festival} showCompatibility={showCompatibility}/>;
-              })}
-          </ScrollView>
-        ) : (
-          <Text> {`Sorry, no ${value}s match your search`}</Text>
-        )}
+        <FestivalList
+          festivalResult={festivalResult}
+          setFestivalResult={setFestivalResult}
+          error={error}
+        />
+        
       </SafeAreaView>
     </SafeAreaView>
   );

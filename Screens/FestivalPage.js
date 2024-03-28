@@ -12,7 +12,7 @@ function FestivalPage({ route }) {
           <Text variant="bodyMedium">{festival.venue.address}</Text>
           <Text variant="bodyMedium">{festival.startdate}</Text>
           {festival.genres &&
-            festival.genres.slice(0, 4).map((genre) => {
+            festival.genres.slice(0, 3).map((genre) => {
               return <Text  key={genre.genreid} variant="bodyMedium">#{genre.name}</Text>;
             })}
 
