@@ -33,7 +33,6 @@ const SearchScreen = () => {
   ];
 
   useEffect(() => {
-    console.log("llocation")
     const getPermissions = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -102,9 +101,6 @@ const SearchScreen = () => {
       });
     }
   }
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <SafeAreaView>
@@ -142,7 +138,7 @@ const SearchScreen = () => {
             onSelect={handleFestivalSearch}
           />
         )}
-        {Object.keys(festivalResult).length > 0 ? (
+        {Object.keys(festivalResult).length > 0 && !isLoading ? (
           <ScrollView>
             {festivalResult.map((festival) => {
                 return <FestivalList key={festival.id} festival={festival} setIsLoading={setIsLoading}/>;

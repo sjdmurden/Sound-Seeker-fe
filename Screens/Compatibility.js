@@ -6,27 +6,24 @@ import { useContext } from "react";
 import { UserContext } from "../Contexts/user";
 
 export const Compatibility = ({ festival, setIsLoading }) => {
+  console.log("comp");
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
-  let artistsId
-if(festival.artists.length === 0){
-  return <Text>Lineup TBA</Text>
-}
-else{
- artistsId = festival.artists.map((artist) => {
+  let artistsId;
+  if (festival.artists.length === 0) {
+    return <Text>Lineup TBA</Text>;
+  } else {
+    artistsId = festival.artists.map((artist) => {
       const spotifyUrl = artist.spotifyartisturl;
-      if(spotifyUrl){
+      if (spotifyUrl) {
         const splitUrl = spotifyUrl.split(":");
         return splitUrl[splitUrl.length - 1];
       }
     });
-}
-setIsLoading(true);
-getArtistInfo(artistsId, loggedInUser).then((response) => {
-  setIsLoading(false);
-  return response;
-});
+  }
 
-return <Text>Compatibility page</Text>;
-}
+  getArtistInfo(artistsId, loggedInUser).then((response) => {
+    return response;
+  });
 
-
+  return <Text>Compatibility page</Text>;
+};
