@@ -14,6 +14,8 @@ const discovery = {
   tokenEndpoint: "https://accounts.spotify.com/api/token",
 };
 
+//helllloooooo
+
 function LoginScreen({ navigation }) {
   const clientId = process.env.EXPO_PUBLIC_CLIENT_ID;
   const redirectUri = process.env.EXPO_PUBLIC_REDIRECT_URI;
