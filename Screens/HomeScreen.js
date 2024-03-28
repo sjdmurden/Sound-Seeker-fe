@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import SearchScreen from './SearchScreen'
+import { LogOut } from './LogOut'
 
 const HomeScreen = () => {
   return (
     <View>
-      <Text>HomeScreen</Text>
       <SearchScreen/>
+      <LogOut/>
     </View>
   )
 }
