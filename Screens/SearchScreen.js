@@ -102,20 +102,28 @@ const SearchScreen = () => {
 
   return (
     <SafeAreaView>
-      <SafeAreaView>
+      <SafeAreaView style={styles.buttonsContainer}>
         <SegmentedButtons
-          value={selectedTab}
-          onValueChange={setSelectedTab}
+          value={value}
+          onValueChange={setValue}
+          style={styles.buttons}
           buttons={[
             {
               value: "festival",
               label: "Festival",
+              style:
+                value === "festival" ? styles.buttonPress : styles.buttonNormal
             },
             {
               value: "artist",
               label: "Artist",
+              style: value === "artist" ? styles.buttonPress : styles.buttonNormal
             },
-            { value: "location", label: "Location" },
+            {
+              value: "location",
+              label: "Location",
+              style: value === "location" ? styles.buttonPress : styles.buttonNormal
+            },
           ]}
         />
       </SafeAreaView>
@@ -151,9 +159,29 @@ const styles = StyleSheet.create({
   searchBox: {
     borderColor: "#ccc",
     borderWidth: 2,
-    borderRadius: 3,
+    borderRadius: 20,
     padding: 10,
     margin: 20,
+    marginTop: 0,
+  },
+  buttons: {
+    marginTop: 0,
+    marginLeft: 20,
+    marginRight: 20,
+    border: "solid",
+    borderColor: "#04396A",
+    borderWidth: 3,
+    borderRadius: 30,
+  },
+  buttonsContainer: {
+  },
+  buttonPress: {
+    backgroundColor: "#F8C383",
+    color: "white",
+  },
+  buttonNormal: {
+    backgroundColor: "white",
+    color: "#F8C383",
   },
 });
 
