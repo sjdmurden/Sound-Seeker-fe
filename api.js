@@ -62,23 +62,20 @@ export const getFestivalByLocation = (location, radius) => {
 };
 
 export const getArtistInfo = (artistsId, loggedInUser) => {
-  console.log("api")
-  return Promise.resolve()
-  // return axios
-  //   .get(`https://sound-seeker.onrender.com/api/users/${loggedInUser.id}`)
-  //   .then(({ data : {user} }) => {
-  //     console.log(data);
-  //     spotifyApi.setAccessToken(user.access_token);
-  //     return spotifyApi.getArtists(artistsId);
-  //   })
-  //   .then((data) => {
-  //     return data.body.artists.map((artist)=>{
-  //       return artist.genres
-  //     })
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+  return axios
+    .get(`https://sound-seeker.onrender.com/api/users/${loggedInUser.id}`)
+    .then(({ data: { user } }) => {
+      spotifyApi.setAccessToken(user.access_token);
+      return spotifyApi.getArtists(artistsId);
+    })
+    .then((data) => {
+      return data.body.artists.map((artist) => {
+        return artist.genres;
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const LogOutUser = (loggedInUser, setLoggedInUser) => {

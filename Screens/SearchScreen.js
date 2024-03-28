@@ -12,9 +12,6 @@ import FestivalList from "./FestivalList";
 import { SegmentedButtons } from "react-native-paper";
 import { SelectList } from "react-native-dropdown-select-list";
 import * as Location from "expo-location";
-import Loading from "./Loading";
-import { useContext } from "react";
-import { UserContext } from "../Contexts/user";
 
 const SearchScreen = () => {
   const [input, setInput] = useState("");
