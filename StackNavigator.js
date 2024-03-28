@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
-import HomeScreen from "./Screens/HomeScreen";
 import { Text } from "react-native";
 import LoginScreen from "./Screens/LoginScreen";
 import SearchScreen from "./Screens/SearchScreen.js";
@@ -36,7 +35,7 @@ function Navigation() {
           <>
             <Stack.Screen
               name="Home"
-              component={HomeScreen}
+              component={SearchScreen}
               options={{ headerShown: false}}
             />
             <Stack.Screen

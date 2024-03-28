@@ -12,6 +12,7 @@ import FestivalList from "./FestivalList";
 import { SegmentedButtons } from "react-native-paper";
 import { SelectList } from "react-native-dropdown-select-list";
 import * as Location from "expo-location";
+import LogOut from "./LogOut"
 
 const SearchScreen = () => {
   const [input, setInput] = useState("");
@@ -104,25 +105,25 @@ const SearchScreen = () => {
     <SafeAreaView>
       <SafeAreaView style={styles.buttonsContainer}>
         <SegmentedButtons
-          value={value}
-          onValueChange={setValue}
+          value={selectedTab}
+          onValueChange={setSelectedTab}
           style={styles.buttons}
           buttons={[
             {
               value: "festival",
               label: "Festival",
               style:
-                value === "festival" ? styles.buttonPress : styles.buttonNormal
+                selectedTab === "festival" ? styles.buttonPress : styles.buttonNormal
             },
             {
               value: "artist",
               label: "Artist",
-              style: value === "artist" ? styles.buttonPress : styles.buttonNormal
+              style: selectedTab === "artist" ? styles.buttonPress : styles.buttonNormal
             },
             {
               value: "location",
               label: "Location",
-              style: value === "location" ? styles.buttonPress : styles.buttonNormal
+              style: selectedTab === "location" ? styles.buttonPress : styles.buttonNormal
             },
           ]}
         />
@@ -151,6 +152,7 @@ const SearchScreen = () => {
         />
         
       </SafeAreaView>
+      <LogOut/>
     </SafeAreaView>
   );
 };

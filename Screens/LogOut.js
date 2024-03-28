@@ -4,7 +4,7 @@ import { View, StyleSheet, Button, Alert } from "react-native";
 import React from "react";
 import { LogOutUser } from "../api";
 
-export const LogOut = () => {
+export default LogOut = () => {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   const handlePress = () =>
     Alert.alert("Signed Out", "", [

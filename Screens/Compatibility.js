@@ -6,7 +6,6 @@ import { useContext } from "react";
 import { UserContext } from "../Contexts/user";
 
 export const Compatibility = ({ festival, festivalIndex, setFestivalResult }) => {
-  console.log("comp");
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   let artistsId;
   if (festival.artists.length === 0) {
