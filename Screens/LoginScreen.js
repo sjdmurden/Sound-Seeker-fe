@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Pressable } from "react-native";
 import { useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,6 +6,7 @@ import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { UserContext } from "../Contexts/user";
+import { shadow } from "react-native-paper";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -16,6 +17,8 @@ function LoginScreen({ navigation }) {
   const clientId = process.env.EXPO_PUBLIC_CLIENT_ID;
   const redirectUri = process.env.EXPO_PUBLIC_REDIRECT_URI;
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+  const [ loginStyle, setLoginStyle ] = useState({})
+  const [ shadowOpacity, setShadowOpacity ] = useState(0)
 
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -41,23 +44,23 @@ function LoginScreen({ navigation }) {
   }, [response]);
 
   return (
-    <LinearGradient colors={["red", "green"]} style={{ flex: 1 }}>
+    <LinearGradient colors={["rgb(4,32,84)", "rgb(4,69,108)"]} style={{ flex: 1 }}>
       <SafeAreaView>
         <View style={{ height: 80 }} />
-        <Entypo
-          style={{ textAlign: "center" }}
-          name="spotify"
-          size={80}
-          color="white"
-        />
-        <Text>Millions of Songs Free on Spotify</Text>
+        <Text>Sound Seeker</Text>
         <View style={{ height: 80 }} />
         <Pressable
           onPress={() => {
-            promptAsync();
+            // promptAsync();
+            setShadowOpacity(1)
           }}
-          style={{ backgroundColor: "yellow", width: 200 }}
         >
+          <Entypo
+            style={{ textAlign: "center", shadowOpacity, shadowRadius: 10, shadowColor: "white", shadowOffset: {width: 0, height: 0}}}
+            name="spotify"
+            size={100}
+            color="white"
+          />
           <Text>Sign in with Spotify</Text>
         </Pressable>
       </SafeAreaView>
