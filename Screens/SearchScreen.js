@@ -23,7 +23,7 @@ const SearchScreen = () => {
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState();
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const data = [
     { key: 20, value: "up to 20 miles" },
@@ -52,7 +52,7 @@ const SearchScreen = () => {
   }, [selectedTab]);
 
   function handleFestivalSearch() {
-    setIsLoading(true)
+    // setIsLoading(true)
     if (selectedTab === "festival") {
       searchAllFestivals(input).then((response) => {
         const results = response.data.results;
@@ -143,8 +143,6 @@ const SearchScreen = () => {
           festivalResult={festivalResult}
           setFestivalResult={setFestivalResult}
           error={error}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
         />
         
       </SafeAreaView>
