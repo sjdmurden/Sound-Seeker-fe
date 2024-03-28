@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { UserContext } from "../Contexts/user";
 
-export const Compatibility = ({ festival, setIsLoading }) => {
+export const Compatibility = ({ festival, festivalIndex, setFestivalResult }) => {
   console.log("comp");
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   let artistsId;
@@ -22,6 +22,11 @@ export const Compatibility = ({ festival, setIsLoading }) => {
   }
 
   getArtistInfo(artistsId, loggedInUser).then((response) => {
+    setFestivalResult((currentResult) => {
+      const resultCopy = JSON.parse(JSON.stringify(currentResult));
+      resultCopy[festivalIndex].isLoaded = true;
+      return resultCopy;
+    })
     return response;
   });
 

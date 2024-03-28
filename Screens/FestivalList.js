@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Compatibility } from "./Compatibility";
 import { SafeAreaView } from "react-native";
 
-const FestivalList = ({ festival , setIsLoading}) => {
+const FestivalList = ({ festival, festivalIndex, setFestivalResult}) => {
   const navigation = useNavigation();
   return (
     <SafeAreaView>
@@ -20,7 +20,8 @@ const FestivalList = ({ festival , setIsLoading}) => {
           <Text variant="bodyMedium">{festival.startdate}</Text>
           <Compatibility
             festival={festival}
-            setIsLoading={setIsLoading}
+            festivalIndex={festivalIndex}
+            setFestivalResult={setFestivalResult}
           />
         </Card.Content>
         <Card.Cover src={festival.xlargeimageurl} />

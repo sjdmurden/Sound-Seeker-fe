@@ -21,7 +21,6 @@ const SearchScreen = () => {
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState();
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   console.log("search")
   const data = [
     { key: 20, value: "up to 20 miles" },
@@ -50,15 +49,18 @@ const SearchScreen = () => {
   }, [selectedTab]);
 
   function handleFestivalSearch() {
-    setIsLoading(true);
     if (selectedTab === "festival") {
       searchAllFestivals(input).then((response) => {
-        if (response.data.results.length > 0) {
-          setFestivalResult(response.data.results);
-          setIsLoading(false);
+        const results = response.data.results;
+        if (results.length > 0) {
+          setError("");
+          const loadingResults = results.map((festival) => {
+            festival.isLoaded = false;
+            return festival;
+          });
+          setFestivalResult(loadingResults);
         } else {
           setFestivalResult([]);
-          setIsLoading(false);
           setError("Sorry, no festival matches your search");
         }
         setInput("");
@@ -69,20 +71,17 @@ const SearchScreen = () => {
         .then((response) => {
           const artistId = response.data.results[0].id;
           getFestivalByArtist(artistId).then((response) => {
-            if (response.data.results.length === 0) {
+            if (response.data.results.length > 0) {
+              setError("");
+              setFestivalResult(response.data.results);
+            } else {
               setError(
                 "Sorry, the artist is not currently playing any festivals"
               );
-              setIsLoading(false);
-            } else {
-              setError("");
-              setFestivalResult(response.data.results);
-              setIsLoading(false);
             }
           });
         })
         .catch((err) => {
-          setIsLoading(false);
           setError("Sorry, no artist matches your search");
         });
       setInput("");
@@ -92,9 +91,7 @@ const SearchScreen = () => {
         setFestivalResult(response.data.results);
         if (response.data.results.length > 0) {
           setFestivalResult(response.data.results);
-          setIsLoading(false);
         } else {
-          setIsLoading(false);
           setError("Sorry, there are no festivals within this distance");
         }
         setInput("");
@@ -138,15 +135,17 @@ const SearchScreen = () => {
             onSelect={handleFestivalSearch}
           />
         )}
-        {Object.keys(festivalResult).length > 0 && !isLoading ? (
-          <ScrollView>
-            {festivalResult.map((festival) => {
-                return <FestivalList key={festival.id} festival={festival} setIsLoading={setIsLoading}/>;
-              })}
-          </ScrollView>
-        ) : (
-          <Text>{error}</Text>
-        )}
+        {Object.keys(festivalResult).length > 0 ? 
+          festivalResult.every((festival) => festival.isLoaded) ?
+            <ScrollView>
+              {festivalResult.map((festival, index) => {
+                  return <FestivalList key={festival.id} festival={festival} festivalIndex={index} setFestivalResult={setFestivalResult}/>;
+                })}
+            </ScrollView>
+            :
+            <Loading />
+          :
+          <Text>{error}</Text>}
       </SafeAreaView>
     </SafeAreaView>
   );
