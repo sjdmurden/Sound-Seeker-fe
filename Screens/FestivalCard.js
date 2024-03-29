@@ -4,13 +4,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Compatibility } from "./Compatibility";
 import { SafeAreaView } from "react-native";
 
-const FestivalCard = ({ festival, festivalIndex, setFestivalResult }) => {
+const FestivalCard = ({ festival, festivalIndex, setFestivalResult, location }) => {
   const navigation = useNavigation();
   return (
     <SafeAreaView>
       <Button
         onPress={() => {
-          navigation.navigate("FestivalPage", { selectedFestival: festival });
+          navigation.navigate("FestivalPage", { selectedFestival: festival }, {location:location});
         }}
       >
         <Card>

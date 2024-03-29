@@ -6,7 +6,7 @@ import { getArtistInfo } from "../api";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../Contexts/user";
 
-const FestivalList = ({ festivalResult, setFestivalResult, error }) => {
+const FestivalList = ({ festivalResult, setFestivalResult, error, location }) => {
   const [loadingFestivals, setLoadingFestivals] = useState([]);
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
@@ -54,6 +54,7 @@ const FestivalList = ({ festivalResult, setFestivalResult, error }) => {
                   festival={festival}
                   festivalIndex={index}
                   setFestivalResult={setFestivalResult}
+                  location={location}
                 />
               );
             })}
