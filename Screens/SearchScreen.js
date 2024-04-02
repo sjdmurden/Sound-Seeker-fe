@@ -40,6 +40,7 @@ const SearchScreen = () => {
       }
       let currentLocation = await Location.getCurrentPositionAsync({});
       setLocation(currentLocation);
+      console.log(currentLocation);
     };
     getPermissions();
   }, []);
@@ -148,6 +149,7 @@ const SearchScreen = () => {
         <FestivalList
           festivalResult={festivalResult}
           setFestivalResult={setFestivalResult}
+          location = {location}
           error={error}
         />
         
