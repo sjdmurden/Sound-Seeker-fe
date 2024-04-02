@@ -40,14 +40,9 @@ function LoginScreen({ navigation }) {
   useEffect(() => {
     if (response?.type === "success") {
       const { code } = response.params;
-      axios.post("https://sound-seeker.onrender.com/api/users/", { code }).then(
-        ({
-          data: {
-            user: { id, display_name, image },
-          },
-        }) => {
-          const newUser = { id, display_name, image };
-          const jsonUser = JSON.stringify(newUser);
+      axios.post("https://sound-seeker.onrender.com/api/users/", { code })
+      .then(({ data: { user }}) => {
+          const jsonUser = JSON.stringify(user);
           SecureStore.setItemAsync("logged-in-user-key", jsonUser);
           setLoggedInUser(newUser);
         }
