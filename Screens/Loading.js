@@ -11,7 +11,7 @@ const Loading = () => {
         size={"large"}
         style={styles.loading}
       />
-      <Text>Finding you the best festivals, Please wait...</Text>
+      <Text style={{textAlign: "center"}}>Finding you the best festivals, Please wait...</Text>
     </>
   );
 };

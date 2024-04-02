@@ -97,9 +97,10 @@ function LoginScreen({ navigation }) {
           <Text style={{
               textAlign: "center",
               color: "white",
-              fontSize: 40,
+              fontSize: 30,
               fontFamily: "Lobster_400Regular",
-          }}>Login</Text>
+              margin: 20,
+          }}>Tap to Login</Text>
         </Pressable>
       </SafeAreaView>
     </LinearGradient>

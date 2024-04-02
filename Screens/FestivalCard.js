@@ -4,13 +4,23 @@ import { useNavigation } from "@react-navigation/native";
 import { Compatibility } from "./Compatibility";
 import { SafeAreaView, StyleSheet, View, Image } from "react-native";
 
-const FestivalCard = ({ festivalGenres, festival, festivalIndex, setFestivalResult, location }) => {
+const FestivalCard = ({
+  festivalGenres,
+  festival,
+  festivalIndex,
+  setFestivalResult,
+  location,
+}) => {
   const navigation = useNavigation();
   return (
     <SafeAreaView>
       <Button
         onPress={() => {
-          navigation.navigate("FestivalPage", { selectedFestival: festival }, {location:location});
+          navigation.navigate(
+            "FestivalPage",
+            { selectedFestival: festival },
+            { location: location }
+          );
         }}
       >
         <Card style={styles.card}>
@@ -26,7 +36,7 @@ const FestivalCard = ({ festivalGenres, festival, festivalIndex, setFestivalResu
               festivalGenres={festivalGenres}
             />
           </View>
-          
+
           <Card.Actions></Card.Actions>
         </Card>
       </Button>
@@ -38,21 +48,19 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     borderRadius: 15,
-    marginBottom:15,
+    marginBottom: 15,
     flexDirection: "row",
-    gap: 10
+    gap: 10,
   },
   card: {
-    backgroundColor: "green",
-    
+    backgroundColor: "white",
+    borderRadius: 20,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowColor: "#f4c58e",
+    shadowRadius: 5,
   },
-  title: {
-    fontSize: 40,
-    color: "#1d8597",
-    paddingLeft: 20,
-    paddingTop: 30,
-    fontFamily: "Lobster_400Regular" 
-  }
-})
+  
+});
 
 export default FestivalCard;
