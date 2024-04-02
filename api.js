@@ -18,7 +18,7 @@ export const searchAllFestivals = (festival_name) => {
       return response;
     })
     .catch((err) => {
-      throw err;
+      console.log(err);
     });
 };
 

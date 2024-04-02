@@ -51,7 +51,7 @@ const FestivalList = ({
     <>
       {Object.keys(festivalResult).length > 0 ? (
         loadingFestivals.every((loading) => loading === false) ? (
-          <ScrollView>
+          <ScrollView style= {{height:"50%"}}>
             {festivalResult.map((festival, index) => {
               return (
                 <FestivalCard
