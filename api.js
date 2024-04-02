@@ -1,4 +1,5 @@
 import axios from "axios";
+import { TokenError, TokenResponse } from "expo-auth-session";
 const SpotifyWebApi = require("spotify-web-api-node");
 import * as SecureStore from "expo-secure-store";
 
@@ -61,20 +62,19 @@ export const getFestivalByLocation = (location, radius) => {
     });
 };
 
-export const getArtistInfo = (artistsId, loggedInUser) => {
+export const getArtistsInfo = (artistsId, loggedInUser) => {
   return axios
-    .get(`https://sound-seeker.onrender.com/api/users/${loggedInUser.id}`)
-    .then(({ data: { user } }) => {
-      spotifyApi.setAccessToken(user.access_token);
+    .get(`https://sound-seeker.onrender.com/api/users/${loggedInUser.id}/token`)
+    .then(({ data: { token } }) => {
+      spotifyApi.setAccessToken(token);
       return spotifyApi.getArtists(artistsId);
     })
     .then((data) => {
       return data.body.artists.map((artist) => {
-        return artist.genres;
+        return artist.genres
       });
     })
     .catch((err) => {
-      console.log(err);
     });
 };
 

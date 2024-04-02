@@ -2,13 +2,19 @@ import { Text } from "react-native-paper";
 import Loading from "./Loading";
 import { ScrollView } from "react-native";
 import FestivalCard from "./FestivalCard";
-import { getArtistInfo } from "../api";
+import { getArtistsInfo } from "../api";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../Contexts/user";
 
-const FestivalList = ({ festivalResult, setFestivalResult, error, location }) => {
+const FestivalList = ({
+  festivalResult,
+  setFestivalResult,
+  error,
+  location,
+}) => {
   const [loadingFestivals, setLoadingFestivals] = useState([]);
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+  const [festivalGenres, setFestivalGenres] = useState([]);
 
   useEffect(() => {
     if (Object.keys(festivalResult).length > 0) {
@@ -22,8 +28,7 @@ const FestivalList = ({ festivalResult, setFestivalResult, error, location }) =>
               return splitUrl[splitUrl.length - 1];
             }
           });
-          getArtistInfo(artistsId, loggedInUser).then((response) => {
-            console.log(response)
+          getArtistsInfo(artistsId, loggedInUser).then((response) => {
             setLoadingFestivals((currLoadingFestivals) => {
               const loadingFestivalsCopy = [...currLoadingFestivals];
               loadingFestivalsCopy[festivalIndex] = false;
@@ -50,6 +55,7 @@ const FestivalList = ({ festivalResult, setFestivalResult, error, location }) =>
             {festivalResult.map((festival, index) => {
               return (
                 <FestivalCard
+                  festivalGenres={festivalGenres[index]}
                   key={festival.id}
                   festival={festival}
                   festivalIndex={index}
