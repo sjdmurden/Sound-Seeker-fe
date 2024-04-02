@@ -14,8 +14,6 @@ const discovery = {
   tokenEndpoint: "https://accounts.spotify.com/api/token",
 };
 
-//helllloooooo
-
 function LoginScreen({ navigation }) {
   const clientId = process.env.EXPO_PUBLIC_CLIENT_ID;
   const redirectUri = process.env.EXPO_PUBLIC_REDIRECT_URI;
@@ -95,6 +93,12 @@ function LoginScreen({ navigation }) {
             size={logoSize}
             color="white"
           />
+          <Text style={{
+              textAlign: "center",
+              color: "white",
+              fontSize: 40,
+              fontFamily: "Lobster_400Regular",
+          }}>Login</Text>
         </Pressable>
       </SafeAreaView>
     </LinearGradient>

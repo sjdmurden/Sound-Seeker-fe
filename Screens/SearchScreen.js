@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet, TextInput, Text, ScrollView } from "react-native";
+import { StyleSheet, TextInput, Text, ScrollView, View, Button, TouchableOpacity } from "react-native";
 import {
   searchAllFestivals,
   getArtistId,
@@ -13,6 +13,8 @@ import { SegmentedButtons } from "react-native-paper";
 import { SelectList } from "react-native-dropdown-select-list";
 import * as Location from "expo-location";
 import LogOut from "./LogOut"
+import { Searchbar } from 'react-native-paper';
+import { useFonts, Lobster_400Regular } from "@expo-google-fonts/lobster";
 
 const SearchScreen = () => {
   const [input, setInput] = useState("");
@@ -22,6 +24,9 @@ const SearchScreen = () => {
   const [location, setLocation] = useState();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  let [fontsLoaded] = useFonts({
+    Lobster_400Regular,
+  });
 
   const data = [
     { key: 20, value: "up to 20 miles" },
@@ -40,7 +45,6 @@ const SearchScreen = () => {
       }
       let currentLocation = await Location.getCurrentPositionAsync({});
       setLocation(currentLocation);
-      console.log(currentLocation);
     };
     getPermissions();
   }, []);
@@ -102,10 +106,20 @@ const SearchScreen = () => {
     }
   }
 
+  const handleSelectTab = (tab) => {
+    setSelectedTab(tab)
+  }
+
+  const changeButtonStyle = (tab) => {
+    return selectedTab === tab ? styles.buttonPress : styles.button 
+  }
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.page}>
+      <Text style={styles.title}>Sound Seeker</Text>
+      <Text style={styles.welcome}>Welcome</Text>
       <SafeAreaView style={styles.buttonsContainer}>
-        <SegmentedButtons
+        {/* <SegmentedButtons
           value={selectedTab}
           onValueChange={setSelectedTab}
           style={styles.buttons}
@@ -127,11 +141,22 @@ const SearchScreen = () => {
               style: selectedTab === "location" ? styles.buttonPress : styles.buttonNormal
             },
           ]}
-        />
+        /> */}
+      <View style={styles.buttonsContainer} onPress={() => handleSelectTab("festival")}>
+        <TouchableOpacity style={changeButtonStyle("festival")} onPress={() => handleSelectTab("festival") }>
+          <Text style={changeButtonStyle("festival")}>Festival</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={changeButtonStyle("artist")} onPress={() => handleSelectTab("artist")}>
+          <Text style={changeButtonStyle("artist")}>Artist</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={changeButtonStyle("location")} onPress={() => handleSelectTab("location")}>
+          <Text style={changeButtonStyle("location")}>Location</Text>
+        </TouchableOpacity>
+      </View>
       </SafeAreaView>
       <SafeAreaView>
         {selectedTab !== "location" ? (
-          <TextInput
+          <Searchbar
             placeholder="Search..."
             value={input}
             onChangeText={setInput}
@@ -160,28 +185,53 @@ const SearchScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 40,
+    color: "#1d8597",
+    paddingLeft: 20,
+    paddingTop: 30,
+    fontFamily: "Lobster_400Regular" 
+  },
+  welcome: {
+    fontSize: 30,
+    color: "#1d8597",
+    paddingLeft: 20,
+    paddingTop: 10, 
+  },
+  page: {
+    flex: 1,
+    backgroundColor: "#fef3df",
+  },
   searchBox: {
-    borderColor: "#ccc",
-    borderWidth: 2,
     borderRadius: 20,
     padding: 10,
     margin: 20,
     marginTop: 0,
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: 0.5,
+    shadowColor: "#f4c58e",
+    shadowRadius: 5
   },
-  buttons: {
+  button: {
     marginTop: 0,
     marginLeft: 20,
     marginRight: 20,
-    border: "solid",
-    borderColor: "#04396A",
-    borderWidth: 3,
-    borderRadius: 30,
-  },
-  buttonsContainer: {
   },
   buttonPress: {
-    backgroundColor: "#F8C383",
+    marginTop: 0,
+    marginLeft: 20,
+    marginRight: 20,
+    backgroundColor: "#fc9454",
+    padding: 2,
     color: "white",
+  }, 
+  textPress: {
+    color: "white"
+  },
+
+  buttonsContainer: {
+    flexDirection: "row",
+    marginHorizontal: 10
   },
   buttonNormal: {
     backgroundColor: "white",
