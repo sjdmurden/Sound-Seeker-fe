@@ -40,13 +40,21 @@ function LoginScreen({ navigation }) {
   useEffect(() => {
     if (response?.type === "success") {
       const { code } = response.params;
-      axios.post("https://sound-seeker.onrender.com/api/users/", { code })
-      .then(({ data: { user }}) => {
-          const jsonUser = JSON.stringify(user);
+      axios
+        .post("https://sound-seeker.onrender.com/api/users/", { code })
+        .then(({ data: { user } }) => {
+          const jsonUser = JSON.stringify({
+            top_genres: user.$__.pathsToScopes.top_genres.top_genres.slice(
+              0,
+              20
+            ),
+            top_artists: user.$__.pathsToScopes.top_genres.top_artists,
+            display_name: user.$__.pathsToScopes.top_genres.display_name,
+            id: user.$__.pathsToScopes.top_genres.id
+          });
           SecureStore.setItemAsync("logged-in-user-key", jsonUser);
-          setLoggedInUser(newUser);
-        }
-      );
+          setLoggedInUser(JSON.parse(jsonUser));
+        });
     }
   }, [response]);
 
