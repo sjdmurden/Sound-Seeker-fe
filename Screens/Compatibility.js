@@ -56,10 +56,12 @@ export const Compatibility = ({ festival, festivalGenres }) => {
     topFestivalGenres.forEach((genre, index) =>{
       maxScore += 50 - index
     })
-    console.log(artistsScore)
+    console.log(artistsScore + genresScore)
+    console.log(maxScore)
     artistsScore *= 2; // artists have higher priority over genres so score is doubled
     // now normalise scores to get value between 0 and 1
     // then x100 to get percentage
+
     console.log(((artistsScore + genresScore) / maxScore) * 100)
   });
 

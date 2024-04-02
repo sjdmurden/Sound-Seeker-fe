@@ -44,14 +44,12 @@ function LoginScreen({ navigation }) {
         .post("https://sound-seeker.onrender.com/api/users/", { code })
         .then(({ data: { user } }) => {
           const jsonUser = JSON.stringify({
-            top_genres: user.$__.pathsToScopes.top_genres.top_genres.slice(
-              0,
-              20
-            ),
-            top_artists: user.$__.pathsToScopes.top_genres.top_artists,
-            display_name: user.$__.pathsToScopes.top_genres.display_name,
-            id: user.$__.pathsToScopes.top_genres.id
+            top_genres: user.top_genres.slice(0, 20),
+            top_artists: user.top_artists,
+            display_name: user.display_name,
+            id: user.id,
           });
+          console.log(jsonUser)
           SecureStore.setItemAsync("logged-in-user-key", jsonUser);
           setLoggedInUser(JSON.parse(jsonUser));
         });
