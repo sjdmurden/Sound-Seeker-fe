@@ -1,22 +1,28 @@
 import * as React from "react";
 import { Text } from "react-native";
 import { getArtistsInfo } from "../api";
-import { useEffect } from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../Contexts/user";
 export const Compatibility = ({ festival, festivalGenres }) => {
+  const festivalArtistsArr = festival.artists.map((artist) => {
+    return artist.name;
+  });
   if (festival.artists.length === 0) {
     return <Text>Lineup TBA</Text>;
-  } 
+  }
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
-
-  const artistsId = festival.artists.map((artist) => {
+  const [compatability, setCompatability] = useState("");
+  const artistsId = [];
+  festival.artists.forEach((artist) => {
     const spotifyUrl = artist.spotifyartisturl;
     if (spotifyUrl) {
       const splitUrl = spotifyUrl.split(":");
-      return splitUrl[splitUrl.length - 1];
+      artistsId.push(splitUrl[splitUrl.length - 1]);
     }
   });
+  if (artistsId.length === 0) {
+    return <Text>Unable to calculate compatability</Text>;
+  }
   getArtistsInfo(artistsId, loggedInUser).then((genres) => {
     const topGenresObj = {};
     genres.flat().forEach((genre) => {
@@ -26,45 +32,40 @@ export const Compatibility = ({ festival, festivalGenres }) => {
         topGenresObj[genre]++;
       }
     });
-    const topFestivalGenres = Object.keys(topGenresObj);
+    let topFestivalGenres = Object.keys(topGenresObj);
     topFestivalGenres.sort((previous, current) => {
       return topGenresObj[current] - topGenresObj[previous];
     });
-    console.log(loggedInUser.top_artists)
-    const commonArtists = loggedInUser.top_artists.filter((artist) =>{
-       festival.artists.includes(artist)}
-    );
+    const commonArtists = loggedInUser.top_artists.filter((artist) => {
+      return festivalArtistsArr.includes(artist);
+    });
     const commonGenres = loggedInUser.top_genres.filter((genre) =>
       topFestivalGenres.includes(genre)
     );
-  
     let artistsScore = 0;
     let genresScore = 0;
+    let maxScore = 0;
+    const artistFactors = { 0: 10, 1: 8, 2: 6, 3: 4, 4: 2 };
+    const genreFactors = { 0: 5, 1: 2, 2: 0 };
+    topFestivalGenres = topFestivalGenres.slice(0, 20);
     commonArtists.forEach((artist) => {
-      artistsScore += 50 - loggedInUser.top_artists.indexOf(artist);
+      const index = loggedInUser.top_artists.indexOf(artist);
+      artistsScore += artistFactors[Math.floor(index / 10)];
     });
     commonGenres.forEach((genre) => {
-      genresScore += 50 - loggedInUser.top_genres.indexOf(genre);
+      const index = loggedInUser.top_genres.indexOf(genre);
+      genresScore += genreFactors[Math.floor(index / 10)];
     });
-  
-    let maxScore = 0;
-  
     festival.artists.forEach((artist, index) => {
-      maxScore += 50 - index;
+      maxScore += artistFactors[Math.floor(index / 10)];
     });
-    maxScore *= 2;
-    topFestivalGenres.forEach((genre, index) =>{
-      maxScore += 50 - index
-    })
-    console.log(artistsScore + genresScore)
-    console.log(maxScore)
-    artistsScore *= 2; // artists have higher priority over genres so score is doubled
-    // now normalise scores to get value between 0 and 1
-    // then x100 to get percentage
 
-    console.log(((artistsScore + genresScore) / maxScore) * 100)
+    topFestivalGenres.forEach((genre, index) => {
+      maxScore += genreFactors[Math.floor(index / 10)];
+    });
+    setCompatability(
+      `${((artistsScore + genresScore) / maxScore) * 100}% compatable`
+    );
   });
-
-  return <Text>Compatibility rating goes here</Text>;
-}
-
+  return <Text>{compatability}</Text>;
+};
