@@ -40,7 +40,7 @@ const SearchScreen = () => {
       }
       let currentLocation = await Location.getCurrentPositionAsync({});
       setLocation(currentLocation);
-      console.log(currentLocation);
+     
     };
     getPermissions();
   }, []);

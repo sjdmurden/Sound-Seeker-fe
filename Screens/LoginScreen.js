@@ -40,18 +40,19 @@ function LoginScreen({ navigation }) {
   useEffect(() => {
     if (response?.type === "success") {
       const { code } = response.params;
-      axios.post("https://sound-seeker.onrender.com/api/users/", { code }).then(
-        ({
-          data: {
-            user: { id, display_name, image },
-          },
-        }) => {
-          const newUser = { id, display_name, image };
-          const jsonUser = JSON.stringify(newUser);
+      axios
+        .post("https://sound-seeker.onrender.com/api/users/", { code })
+        .then(({ data: { user } }) => {
+          const jsonUser = JSON.stringify({
+            top_genres: user.top_genres.slice(0, 20),
+            top_artists: user.top_artists,
+            display_name: user.display_name,
+            id: user.id,
+          });
+          console.log(jsonUser)
           SecureStore.setItemAsync("logged-in-user-key", jsonUser);
-          setLoggedInUser(newUser);
-        }
-      );
+          setLoggedInUser(JSON.parse(jsonUser));
+        });
     }
   }, [response]);
 
