@@ -56,10 +56,10 @@ export const Compatibility = ({ festival, festivalGenres }) => {
       const index = loggedInUser.top_genres.indexOf(genre);
       genresScore += genreFactors[Math.floor(index / 10)];
     });
-    festival.artists.forEach((artist, index) => {
+    commonArtists.forEach((artist, index) => {
       maxScore += artistFactors[Math.floor(index / 10)];
     });
-    topFestivalGenres.forEach((genre, index) => {
+    commonGenres.forEach((genre, index) => {
       maxScore += genreFactors[Math.floor(index / 10)];
     });
     setCompatability(
