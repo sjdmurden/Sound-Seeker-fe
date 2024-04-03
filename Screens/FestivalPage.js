@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import * as Location from "expo-location";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faLocationDot, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
+import PieChart from "./Graphs";
 
 function FestivalPage({ route }) {
   const festival = route.params.selectedFestival;
@@ -68,6 +69,7 @@ function FestivalPage({ route }) {
               numColumns={3} 
             />
           </View>
+          <PieChart festival={festival}/>
           <MapView
             style={styles.map}
             initialRegion={{

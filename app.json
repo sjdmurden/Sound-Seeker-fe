@@ -15,13 +15,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sebmurden.fesoundseeker"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sebmurden.fesoundseeker"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -29,6 +31,17 @@
     "plugins": [
       "expo-secure-store",
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "bf45ddc4-d48f-42f5-b59f-05b76f835d68"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/bf45ddc4-d48f-42f5-b59f-05b76f835d68"
+    }
   }
 }
