@@ -69,7 +69,7 @@ const FestivalList = ({
           <Loading />
         )
       ) : (
-        <Text>{error}</Text>
+        <Text style={{fontSize: 18, textAlign: "center", padding: 10, fontWeight: "bold",}}>{error}</Text>
       )}
     </>
   );

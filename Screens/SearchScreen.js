@@ -41,7 +41,6 @@ const SearchScreen = () => {
   const data = [
     { key: 20, value: "up to 20 miles" },
     { key: 40, value: "up to 40 miles" },
-    { key: 60, value: "up to 60 miles" },
     { key: 80, value: "up to 80 miles" },
     { key: 100, value: "up to 100 miles" },
     { key: 200, value: "up to 200 miles" },
@@ -92,6 +91,7 @@ const SearchScreen = () => {
               setError("");
               setFestivalResult(response.data.results);
             } else {
+              setFestivalResult([]);
               setError(
                 "Sorry, the artist is not currently playing any festivals"
               );
@@ -191,7 +191,11 @@ const SearchScreen = () => {
           data={data}
           save="key"
           onSelect={handleFestivalSearch}
-          style={styles.searchBox}
+          inputStyles={styles.inputLocationBox}
+          boxStyles={styles.locationSearchBox}
+          dropdownStyles={styles.dropdown}
+          dropdownTextStyles={styles.dropdownTextStyles}
+          dropdownItemStyles={styles.dropdownItemStyles}
         />
       )}
       <FestivalList
@@ -201,7 +205,8 @@ const SearchScreen = () => {
         error={error}
       />
 
-      <LogOut />
+      <LogOut
+      />
     </SafeAreaView>
   );
 };
@@ -215,7 +220,7 @@ const styles = StyleSheet.create({
     fontFamily: "Lobster_400Regular",
   },
   welcome: {
-    fontSize: 30,
+    fontSize: 20,
     color: "#1d8597",
     paddingLeft: 20,
     paddingTop: 10,
@@ -225,8 +230,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fef3df",
   },
   searchBox: {
+    backgroundColor: "white",
     borderRadius: 20,
-    padding: 10,
     margin: 20,
     marginTop: 0,
     shadowOffset: { width: 0, height: 10 },
@@ -235,11 +240,14 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   button: {
+    fontSize: 16,
     marginTop: 0,
     marginLeft: 20,
     marginRight: 20,
   },
   buttonPress: {
+    fontSize: 16,
+    borderRadius: 20,
     marginTop: 0,
     marginLeft: 20,
     marginRight: 20,
@@ -253,12 +261,47 @@ const styles = StyleSheet.create({
 
   buttonsContainer: {
     flexDirection: "row",
-    marginHorizontal: 10,
+    justifyContent: "center",
   },
   buttonNormal: {
     backgroundColor: "white",
     color: "#F8C383",
   },
+  locationSearchBox: {
+    borderColor: "white",
+    backgroundColor: "white",
+    borderRadius: 20,
+
+    margin: 20,
+    marginTop: 0,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowColor: "#f4c58e",
+    shadowRadius: 5,
+  },
+  inputLocationBox: {
+    padding: 7,
+    fontSize: 14,
+  },
+  dropdown: {
+    borderColor: "white",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 10,
+    margin: 20,
+    marginTop: 0,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowColor: "#f4c58e",
+    shadowRadius: 5,
+    
+  },
+  dropdownTextStyles: {
+    fontSize: 14,
+    
+  },
+
+
 });
 
 export default SearchScreen;

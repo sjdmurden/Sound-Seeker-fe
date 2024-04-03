@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../Contexts/user";
-import { View, StyleSheet, Button, Alert } from "react-native";
+import { View, StyleSheet, Button, Alert, Pressable, Text } from "react-native";
 import React from "react";
 import { LogOutUser } from "../api";
 
@@ -16,5 +16,30 @@ export default LogOut = () => {
       },
     ]);
 
-  return <Button title="Sign out" onPress={handlePress}></Button>;
+  return (
+    <View style={styles.container}>
+      <Pressable onPress={handlePress}>
+        <Text style={styles.logoutButton}>Sign Out</Text>
+      </Pressable>
+    </View>
+  );
 };
+
+const styles = StyleSheet.create({
+  logoutButton: {
+    fontSize: 18,
+    color: "white",
+    textAlign: "center",
+  },
+  container: {
+    position: "absolute",
+    top: 110,
+
+    right: 20,
+    fontSize: 16,
+    borderRadius: 20,
+
+    backgroundColor: "#fc9454",
+    padding: 12,
+  },
+});
