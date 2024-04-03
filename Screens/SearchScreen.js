@@ -126,7 +126,19 @@ const SearchScreen = () => {
 
   return (
     <SafeAreaView style={styles.page}>
-      <Text style={styles.title}>Sound Seeker</Text>
+      {fontsLoaded && (
+        <Text
+          style={{
+            fontSize: 40,
+            color: "#1d8597",
+            paddingLeft: 20,
+            paddingTop: 30,
+            fontFamily: "Lobster_400Regular",
+          }}
+        >
+          Sound Seeker
+        </Text>
+      )}
       <Text style={styles.welcome}>Welcome {loggedInUser.display_name}</Text>
       <SafeAreaView style={styles.buttonsContainer}>
         {/* <SegmentedButtons
@@ -205,20 +217,12 @@ const SearchScreen = () => {
         error={error}
       />
 
-      <LogOut
-      />
+      <LogOut />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 40,
-    color: "#1d8597",
-    paddingLeft: 20,
-    paddingTop: 30,
-    fontFamily: "Lobster_400Regular",
-  },
   welcome: {
     fontSize: 20,
     color: "#1d8597",
@@ -294,14 +298,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowColor: "#f4c58e",
     shadowRadius: 5,
-    
   },
   dropdownTextStyles: {
     fontSize: 14,
-    
   },
-
-
 });
 
 export default SearchScreen;

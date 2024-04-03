@@ -68,7 +68,6 @@ export const Compatibility = ({ festival, festivalGenres }) => {
     } else if (festival.artists.length > 10) {
       compatibilityRating *= 2;
     }
-    console.log(compatibilityRating)
     setCompatibility(`${Math.ceil(compatibilityRating)}% compatible`);
   });
   return <Text>{compatibility}</Text>;
