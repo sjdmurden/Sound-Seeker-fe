@@ -45,8 +45,8 @@ export const Compatibility = ({ festival, festivalGenres }) => {
     let artistsScore = 0;
     let genresScore = 0;
     let maxScore = 0;
-    const artistFactors = { 0: 10, 1: 8, 2: 6, 3: 4, 4: 2 };
-    const genreFactors = { 0: 5, 1: 2, 2: 0 };
+    const artistFactors = { 0: 100, 1: 90, 2: 80, 3: 70, 4: 60 };
+    const genreFactors = { 0: 100, 1: 80, 2: 0 };
     topFestivalGenres = topFestivalGenres.slice(0, 20);
     commonArtists.forEach((artist) => {
       const index = loggedInUser.top_artists.indexOf(artist);
@@ -59,12 +59,18 @@ export const Compatibility = ({ festival, festivalGenres }) => {
     festival.artists.forEach((artist, index) => {
       maxScore += artistFactors[Math.floor(index / 10)];
     });
-
     topFestivalGenres.forEach((genre, index) => {
       maxScore += genreFactors[Math.floor(index / 10)];
     });
+    let compatabilityRating = ((artistsScore + genresScore) / maxScore) * 100
+    if(festival.artists.length > 20){
+      compatabilityRating *= 3
+    }
+    else if(festival.artists.length > 10){
+      compatabilityRating *= 2
+    }
     setCompatability(
-      `${((artistsScore + genresScore) / maxScore) * 100}% compatable`
+      `${Math.ceil(compatabilityRating)}% compatable`
     );
   });
   return <Text>{compatability}</Text>;

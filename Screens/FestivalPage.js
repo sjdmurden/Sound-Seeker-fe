@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View, Linking, TouchableOpacity, FlatList, Image } from "react-native";
+import { ScrollView, StyleSheet, View, Linking, TouchableOpacity, FlatList, Image} from "react-native";
 import { Card, Text } from "react-native-paper";
 import MapView, { Marker } from "react-native-maps";
 import { StatusBar } from "expo-status-bar";
@@ -60,6 +60,7 @@ function FestivalPage({ route }) {
           </View>
           <View style={styles.lineup}>
             <Text variant="titleLarge">Line Up</Text>
+            {/* change flatlist to alternative*/}
             <FlatList
               data={festival.artists}
               renderItem={renderItem}
@@ -67,7 +68,6 @@ function FestivalPage({ route }) {
               numColumns={3} 
             />
           </View>
-
           <MapView
             style={styles.map}
             initialRegion={{
