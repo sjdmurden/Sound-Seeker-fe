@@ -1,30 +1,21 @@
 import * as React from "react";
 import { useState, useEffect, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  StyleSheet,
-  TextInput,
-  Text,
-  ScrollView,
-  View,
-  Button,
-  TouchableOpacity,
-  StatusBar,
-} from "react-native";
+import { Text, View, TouchableOpacity, StatusBar, StyleSheet } from "react-native";
 import {
   searchAllFestivals,
   getArtistId,
   getFestivalByArtist,
   getFestivalByLocation,
 } from "../api";
-import FestivalList from "./FestivalList";
-import { SegmentedButtons } from "react-native-paper";
+import FestivalList from "../components/FestivalList";
+
 import { SelectList } from "react-native-dropdown-select-list";
 import * as Location from "expo-location";
-import LogOut from "./LogOut";
+import SignOut from "../components/SignOut";
 import { Searchbar } from "react-native-paper";
 import { useFonts, Lobster_400Regular } from "@expo-google-fonts/lobster";
-import { UserContext } from "../Contexts/user";
+import { UserContext } from "../contexts/user";
 import { LinearGradient } from "expo-linear-gradient";
 
 const SearchScreen = () => {
@@ -66,7 +57,7 @@ const SearchScreen = () => {
   }, [selectedTab]);
 
   function handleFestivalSearch() {
-    setIsLoading(true)
+    setIsLoading(true);
     if (selectedTab === "festival") {
       searchAllFestivals(input).then((response) => {
         const results = response.data.results;
@@ -101,6 +92,7 @@ const SearchScreen = () => {
           });
         })
         .catch((err) => {
+          setFestivalResult([]);
           setError("Sorry, no artist matches your search");
         });
       setInput("");
@@ -135,77 +127,77 @@ const SearchScreen = () => {
       <SafeAreaView edges={["right", "left", "top"]}>
         {fontsLoaded && <Text style={styles.title}>Sound Seeker</Text>}
         <Text style={styles.welcome}>Welcome {loggedInUser.display_name}</Text>
-          <View
-            style={styles.buttonsContainer}
+        <View
+          style={styles.buttonsContainer}
+          onPress={() => handleSelectTab("festival")}
+        >
+          <TouchableOpacity
+            style={changeButtonStyle("festival")}
             onPress={() => handleSelectTab("festival")}
           >
-            <TouchableOpacity
-              style={changeButtonStyle("festival")}
-              onPress={() => handleSelectTab("festival")}
-            >
-              <Text style={changeButtonStyle("festival")}>Festival</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={changeButtonStyle("artist")}
-              onPress={() => handleSelectTab("artist")}
-            >
-              <Text style={changeButtonStyle("artist")}>Artist</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={changeButtonStyle("location")}
-              onPress={() => handleSelectTab("location")}
-            >
-              <Text style={changeButtonStyle("location")}>Location</Text>
-            </TouchableOpacity>
-          </View>
-     
-      {selectedTab !== "location" ? (
-        <Searchbar
-          placeholder="Search..."
-          value={input}
-          onChangeText={setInput}
-          onSubmitEditing={handleFestivalSearch}
-          style={styles.searchBox}
-        />
-      ) : (
-        <SelectList
-          setSelected={(key) => setRadius(key)}
-          data={data}
-          save="key"
-          onSelect={handleFestivalSearch}
-          inputStyles={styles.inputLocationBox}
-          boxStyles={styles.locationSearchBox}
-          dropdownStyles={styles.dropdown}
-          dropdownTextStyles={styles.dropdownTextStyles}
-          dropdownItemStyles={styles.dropdownItemStyles}
-        />
-      )}
-      {
-        Object.keys(festivalResult).length > 0 ?
-        <FestivalList
-          festivalResult={festivalResult}
-          setFestivalResult={setFestivalResult}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          error={error}
-          location={location}
-        />
-        :
-        <Text
-          style={{
-            color: "white",
-            fontSize: 18,
-            textAlign: "center",
-            padding: 10,
-            fontWeight: "bold",
-          }}
-        >
-          {error}
-        </Text>
-      }
+            <Text style={changeButtonStyle("festival")}>Festival</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={changeButtonStyle("artist")}
+            onPress={() => handleSelectTab("artist")}
+          >
+            <Text style={changeButtonStyle("artist")}>Artist</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={changeButtonStyle("location")}
+            onPress={() => handleSelectTab("location")}
+          >
+            <Text style={changeButtonStyle("location")}>Location</Text>
+          </TouchableOpacity>
+        </View>
 
-      <LogOut />
-    </SafeAreaView>
+        {selectedTab !== "location" ? (
+          <Searchbar
+            placeholder="Search..."
+            value={input}
+            onChangeText={setInput}
+            onSubmitEditing={handleFestivalSearch}
+            style={styles.searchBox}
+          />
+        ) : (
+          <SelectList
+            setSelected={(key) => setRadius(key)}
+            data={data}
+            save="key"
+            onSelect={handleFestivalSearch}
+            inputStyles={styles.inputLocationBox}
+            boxStyles={styles.locationSearchBox}
+            dropdownStyles={styles.dropdown}
+            dropdownTextStyles={styles.dropdownTextStyles}
+            dropdownItemStyles={styles.dropdownItemStyles}
+          />
+        )}
+        {Object.keys(festivalResult).length > 0 ? (
+          <FestivalList
+            festivalResult={festivalResult}
+            setFestivalResult={setFestivalResult}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            error={error}
+            location={location}
+          />
+        ) : (
+          <Text
+            style={{
+              color: "white",
+              fontSize: 18,
+              textAlign: "center",
+              padding: 10,
+              fontWeight: "bold",
+            }}
+          >
+            {error}
+          </Text>
+        )}
+
+        <SignOut />
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 

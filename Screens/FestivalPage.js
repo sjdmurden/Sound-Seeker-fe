@@ -10,13 +10,10 @@ import {
 } from "react-native";
 import { Card, Text } from "react-native-paper";
 import MapView, { Marker } from "react-native-maps";
-import { StatusBar } from "expo-status-bar";
-import * as Location from "expo-location";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faLocationDot, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
-import PieChart from "./Graphs";
+import PieChart from "../components/Graphs";
 
 function FestivalPage({ route }) {
   const festival = route.params.selectedFestival;
@@ -91,7 +88,6 @@ function FestivalPage({ route }) {
                 Line Up TBA
               </Text>
             )}
-            {/* change flatlist to alternative*/}
             <FlatList
               data={festival.artists}
               renderItem={renderItem}

@@ -1,25 +1,22 @@
 import { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Pressable, StatusBar, } from "react-native";
-import { useAuthRequest, makeRedirectUri } from "expo-auth-session";
+import { Text, View, SafeAreaView, Pressable } from "react-native";
+import { useAuthRequest } from "expo-auth-session";
 import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-import { UserContext } from "../Contexts/user";
-import { shadow } from "react-native-paper";
+import { UserContext } from "../contexts/user";
 import { useFonts, Lobster_400Regular } from "@expo-google-fonts/lobster";
-import AppLoading from "expo-app-loading";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
   tokenEndpoint: "https://accounts.spotify.com/api/token",
 };
 
-function LoginScreen({ navigation }) {
+function LoginScreen() {
   const clientId = process.env.EXPO_PUBLIC_CLIENT_ID;
   const redirectUri = process.env.EXPO_PUBLIC_REDIRECT_URI;
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
-  const [loginStyle, setLoginStyle] = useState({});
   const [shadowOpacity, setShadowOpacity] = useState(0);
   const [logoSize, setLogoSize] = useState(200);
   let [fontsLoaded] = useFonts({
@@ -54,7 +51,7 @@ function LoginScreen({ navigation }) {
     }
   }, [response]);
   if (!fontsLoaded) {
-    return <Text></Text>
+    return <Text></Text>;
   } else {
     return (
       <LinearGradient

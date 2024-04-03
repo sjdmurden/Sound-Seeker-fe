@@ -12,7 +12,7 @@ const Loading = () => {
         color={"#faf8fc"}
         style={styles.loading}
       />
-      <Text style={{ textAlign: "center" }}>
+      <Text style={{ textAlign: "center", color: "white" }}>
         Finding you the best festivals, Please wait...
       </Text>
     </>

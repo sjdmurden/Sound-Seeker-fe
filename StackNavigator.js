@@ -1,15 +1,12 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Entypo } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
-import { Text } from "react-native";
-import LoginScreen from "./Screens/LoginScreen";
+import LoginScreen from "./Screens/LoginScreen.js";
 import SearchScreen from "./Screens/SearchScreen.js";
 import FestivalPage from "./Screens/FestivalPage.js";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useContext } from "react";
-import { UserContext } from "./Contexts/user.js";
+import { UserContext } from "./contexts/user.js";
 
 const Stack = createNativeStackNavigator();
 

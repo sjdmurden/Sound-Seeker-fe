@@ -1,19 +1,9 @@
 import * as React from "react";
 import { Button, Card, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { Compatibility } from "./Compatibility";
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Image,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faLocationDot,
-  faCalendarDays,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 
 const FestivalCard = ({ festival, location }) => {
   const navigation = useNavigation();
@@ -75,11 +65,10 @@ const FestivalCard = ({ festival, location }) => {
               {festival.genres &&
                 festival.genres.slice(0, 3).map((genre) => {
                   return (
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={{ flexDirection: "row" }} key={genre.genreid}>
                       <Text style={{ color: "#194485" }}> {"#"}</Text>
                       <Text
                         style={{ color: "#194485", paddingLeft: 5 }}
-                        key={genre.genreid}
                         variant="bodyLarge"
                       >
                         {genre.name}

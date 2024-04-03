@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import Navigation from "./StackNavigator";
-import { UserProvider } from "./Contexts/user";
+import { UserProvider } from "./contexts/user";
 
 export default function App() {
   return (

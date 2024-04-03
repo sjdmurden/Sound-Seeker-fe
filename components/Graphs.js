@@ -3,7 +3,7 @@ import { View, Dimensions } from "react-native";
 import * as d3 from "d3";
 import Svg, { Path, G } from "react-native-svg";
 import { useContext } from "react";
-import { UserContext } from "../Contexts/user";
+import { UserContext } from "../contexts/user";
 import { getArtistsInfo } from "../api";
 
 const PieChart = ({ festival }) => {
@@ -40,7 +40,7 @@ const PieChart = ({ festival }) => {
 
     getGenres();
   }, [festival]);
-  console.log(topGenres);
+
   const color = d3
     .scaleOrdinal()
     .domain(topGenres.map((d) => d.genre))

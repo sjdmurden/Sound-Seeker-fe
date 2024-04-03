@@ -1,9 +1,12 @@
 import axios from "axios";
-import { TokenError, TokenResponse } from "expo-auth-session";
 const SpotifyWebApi = require("spotify-web-api-node");
 import * as SecureStore from "expo-secure-store";
 
-
+const spotifyApi = new SpotifyWebApi({
+  clientId: process.env.EXPO_PUBLIC_CLIENT_ID,
+  clientSecret: process.env.EXPO_PUBLIC_CLIENT_SECRET,
+  redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI,
+});
 
 export const searchAllFestivals = (festival_name) => {
   return axios
@@ -59,13 +62,7 @@ export const getFestivalByLocation = (location, radius) => {
 };
 
 export const getArtistsInfo = (artistsId, loggedInUser) => {
-  const spotifyApi = new SpotifyWebApi({
-    clientId: process.env.EXPO_PUBLIC_CLIENT_ID,
-    clientSecret: process.env.EXPO_PUBLIC_CLIENT_SECRET,
-    redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI,
-  });
-  return true
-  axios
+  return axios
     .get(`https://sound-seeker.onrender.com/api/users/${loggedInUser.id}/token`)
     .then(({ data: { token } }) => {
       spotifyApi.setAccessToken(token);
@@ -73,19 +70,18 @@ export const getArtistsInfo = (artistsId, loggedInUser) => {
     })
     .then((data) => {
       return data.body.artists.map((artist) => {
-        return artist.genres
+        return artist.genres;
       });
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err);
     });
 };
 
 export const LogOutUser = (loggedInUser, setLoggedInUser) => {
-  axios
-    .delete(`https://sound-seeker.onrender.com/api/users/${loggedInUser.id}`)
-    .then(() => {
-      setLoggedInUser(null);
-      SecureStore.deleteItemAsync("logged-in-user-key");
-    });
+  setLoggedInUser(null);
+  SecureStore.deleteItemAsync("logged-in-user-key");
+  axios.delete(
+    `https://sound-seeker.onrender.com/api/users/${loggedInUser.id}`
+  );
 };

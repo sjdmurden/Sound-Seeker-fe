@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { UserContext } from "../Contexts/user";
-import { View, StyleSheet, Button, Alert, Pressable, Text } from "react-native";
+import { UserContext } from "../contexts/user";
+import { View, StyleSheet, Alert, Pressable, Text } from "react-native";
 import React from "react";
 import { LogOutUser } from "../api";
 
-export default LogOut = () => {
+export default SignOut = () => {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   const handlePress = () =>
     Alert.alert("Signed Out", "", [
