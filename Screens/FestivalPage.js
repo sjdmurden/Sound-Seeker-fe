@@ -12,13 +12,11 @@ import { Card, Text } from "react-native-paper";
 import MapView, { Marker } from "react-native-maps";
 import { StatusBar } from "expo-status-bar";
 import * as Location from "expo-location";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faLocationDot,
-  faCalendarDays,
-} from "@fortawesome/free-solid-svg-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faLocationDot, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
+import PieChart from "./Graphs";
 
 function FestivalPage({ route }) {
   const festival = route.params.selectedFestival;
@@ -62,7 +60,7 @@ function FestivalPage({ route }) {
             <FontAwesomeIcon icon={faLocationDot} /> {""}
             {festival.venue.address}, {festival.venue.postcode}
           </Text>
-
+          <Text>{festival.compatibility}</Text>
           <View style={styles.genresContainer}>
             {festival.genres &&
               festival.genres.slice(0, 5).map((genre) => {
@@ -101,6 +99,7 @@ function FestivalPage({ route }) {
               numColumns={3}
             />
           </View>
+          <PieChart festival={festival}/>
           <MapView
             style={styles.map}
             initialRegion={{

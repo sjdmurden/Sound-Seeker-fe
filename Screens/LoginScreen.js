@@ -8,6 +8,7 @@ import * as SecureStore from "expo-secure-store";
 import { UserContext } from "../Contexts/user";
 import { shadow } from "react-native-paper";
 import { useFonts, Lobster_400Regular } from "@expo-google-fonts/lobster";
+import AppLoading from "expo-app-loading";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -52,17 +53,16 @@ function LoginScreen({ navigation }) {
         });
     }
   }, [response]);
-
-  return (
-    <LinearGradient
-      colors={["rgb(4,32,84)", "rgb(4,69,108)"]}
-      style={{ flex: 1 }}
-    >
-      <SafeAreaView>
-      <StatusBar backgroundColor="#61dafb" />
-        <View style={{ height: 80 }} />
-
-        {fontsLoaded && (
+  if (!fontsLoaded) {
+    return <Text></Text>
+  } else {
+    return (
+      <LinearGradient
+        colors={["rgb(4,32,84)", "rgb(4,69,108)"]}
+        style={{ flex: 1 }}
+      >
+        <SafeAreaView>
+          <View style={{ height: 80 }} />
           <Text
             style={{
               color: "white",
@@ -73,28 +73,26 @@ function LoginScreen({ navigation }) {
           >
             Sound Seeker
           </Text>
-        )}
-        <View style={{ height: 80 }} />
-        <Pressable
-          onPress={() => {
-            promptAsync();
-            setShadowOpacity(1);
-            setLogoSize(190);
-          }}
-        >
-          <Entypo
-            style={{
-              textAlign: "center",
-              shadowOpacity,
-              shadowRadius: 10,
-              shadowColor: "white",
-              shadowOffset: { width: 0, height: 0 },
+          <View style={{ height: 80 }} />
+          <Pressable
+            onPress={() => {
+              promptAsync();
+              setShadowOpacity(1);
+              setLogoSize(190);
             }}
-            name="spotify"
-            size={logoSize}
-            color="white"
-          />
-          {fontsLoaded && (
+          >
+            <Entypo
+              style={{
+                textAlign: "center",
+                shadowOpacity,
+                shadowRadius: 10,
+                shadowColor: "white",
+                shadowOffset: { width: 0, height: 0 },
+              }}
+              name="spotify"
+              size={logoSize}
+              color="white"
+            />
             <Text
               style={{
                 textAlign: "center",
@@ -106,11 +104,11 @@ function LoginScreen({ navigation }) {
             >
               Tap to Login
             </Text>
-          )}
-        </Pressable>
-      </SafeAreaView>
-    </LinearGradient>
-  );
+          </Pressable>
+        </SafeAreaView>
+      </LinearGradient>
+    );
+  }
 }
 
 export default LoginScreen;

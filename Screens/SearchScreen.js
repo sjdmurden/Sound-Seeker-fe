@@ -66,7 +66,7 @@ const SearchScreen = () => {
   }, [selectedTab]);
 
   function handleFestivalSearch() {
-    // setIsLoading(true)
+    setIsLoading(true)
     if (selectedTab === "festival") {
       searchAllFestivals(input).then((response) => {
         const results = response.data.results;
@@ -135,8 +135,6 @@ const SearchScreen = () => {
       <SafeAreaView edges={["right", "left", "top"]}>
         {fontsLoaded && <Text style={styles.title}>Sound Seeker</Text>}
         <Text style={styles.welcome}>Welcome {loggedInUser.display_name}</Text>
-
-       
           <View
             style={styles.buttonsContainer}
             onPress={() => handleSelectTab("festival")}
@@ -161,38 +159,53 @@ const SearchScreen = () => {
             </TouchableOpacity>
           </View>
      
-
-        {selectedTab !== "location" ? (
-          <Searchbar
-            placeholder="Search..."
-            value={input}
-            onChangeText={setInput}
-            onSubmitEditing={handleFestivalSearch}
-            style={styles.searchBox}
-          />
-        ) : (
-          <SelectList
-            setSelected={(key) => setRadius(key)}
-            data={data}
-            save="key"
-            onSelect={handleFestivalSearch}
-            inputStyles={styles.inputLocationBox}
-            boxStyles={styles.locationSearchBox}
-            dropdownStyles={styles.dropdown}
-            dropdownTextStyles={styles.dropdownTextStyles}
-            dropdownItemStyles={styles.dropdownItemStyles}
-          />
-        )}
-      </SafeAreaView>
-      <FestivalList
-        festivalResult={festivalResult}
-        setFestivalResult={setFestivalResult}
-        location={location}
-        error={error}
-      />
+      {selectedTab !== "location" ? (
+        <Searchbar
+          placeholder="Search..."
+          value={input}
+          onChangeText={setInput}
+          onSubmitEditing={handleFestivalSearch}
+          style={styles.searchBox}
+        />
+      ) : (
+        <SelectList
+          setSelected={(key) => setRadius(key)}
+          data={data}
+          save="key"
+          onSelect={handleFestivalSearch}
+          inputStyles={styles.inputLocationBox}
+          boxStyles={styles.locationSearchBox}
+          dropdownStyles={styles.dropdown}
+          dropdownTextStyles={styles.dropdownTextStyles}
+          dropdownItemStyles={styles.dropdownItemStyles}
+        />
+      )}
+      {
+        Object.keys(festivalResult).length > 0 ?
+        <FestivalList
+          festivalResult={festivalResult}
+          setFestivalResult={setFestivalResult}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          error={error}
+          location={location}
+        />
+        :
+        <Text
+          style={{
+            color: "white",
+            fontSize: 18,
+            textAlign: "center",
+            padding: 10,
+            fontWeight: "bold",
+          }}
+        >
+          {error}
+        </Text>
+      }
 
       <LogOut />
-    </LinearGradient>
+    </SafeAreaView>
   );
 };
 

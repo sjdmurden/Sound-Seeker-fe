@@ -15,13 +15,7 @@ import {
   faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 
-const FestivalCard = ({
-  festivalGenres,
-  festival,
-  festivalIndex,
-  setFestivalResult,
-  location,
-}) => {
+const FestivalCard = ({ festival, location }) => {
   const navigation = useNavigation();
   return (
     <Button
@@ -94,10 +88,7 @@ const FestivalCard = ({
                   );
                 })}
             </View>
-            {/* <Compatibility
-              festival={festival}
-              festivalGenres={festivalGenres}
-            /> */}
+            <Text>{festival.compatibility}</Text>
           </View>
         </View>
       </View>
@@ -119,7 +110,6 @@ const styles = StyleSheet.create({
     shadowColor: "#17212b",
     shadowRadius: 5,
   },
-
   containerAfterTitle: {
     width: 310,
     flexDirection: "row",

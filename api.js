@@ -77,6 +77,7 @@ export const getArtistsInfo = (artistsId, loggedInUser) => {
       });
     })
     .catch((err) => {
+      console.log(err)
     });
 };
 
