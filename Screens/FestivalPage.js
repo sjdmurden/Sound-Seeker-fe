@@ -8,7 +8,6 @@ import { faLocationDot, faCalendarDays } from '@fortawesome/free-solid-svg-icons
 
 function FestivalPage({ route }) {
   const festival = route.params.selectedFestival;
-  const compatibility = route.params.compatibility
   const { latitude, longitude } = festival.venue;
 
   const handleArtistPress = (spotifyUrl) => {
@@ -44,7 +43,7 @@ function FestivalPage({ route }) {
             <FontAwesomeIcon icon={faLocationDot} />
             {festival.venue.address}, {festival.venue.postcode}
           </Text>
-          <Text>{compatibility}</Text>
+          <Text>{festival.compatibility}</Text>
           <View style={styles.genresContainer}>
             {festival.genres &&
               festival.genres.slice(0, 5).map((genre) => {

@@ -64,7 +64,7 @@ const SearchScreen = () => {
   }, [selectedTab]);
 
   function handleFestivalSearch() {
-    // setIsLoading(true)
+    setIsLoading(true)
     if (selectedTab === "festival") {
       searchAllFestivals(input).then((response) => {
         const results = response.data.results;
@@ -210,12 +210,28 @@ const SearchScreen = () => {
           dropdownItemStyles={styles.dropdownItemStyles}
         />
       )}
-      <FestivalList
-        festivalResult={festivalResult}
-        setFestivalResult={setFestivalResult}
-        location={location}
-        error={error}
-      />
+      {
+        Object.keys(festivalResult).length > 0 ?
+        <FestivalList
+          festivalResult={festivalResult}
+          setFestivalResult={setFestivalResult}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          error={error}
+          location={location}
+        />
+        :
+        <Text
+          style={{
+            fontSize: 18,
+            textAlign: "center",
+            padding: 10,
+            fontWeight: "bold",
+          }}
+        >
+          {error}
+        </Text>
+      }
 
       <LogOut />
     </SafeAreaView>

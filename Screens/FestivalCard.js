@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Compatibility } from "./Compatibility";
 import { SafeAreaView, StyleSheet, View, Image } from "react-native";
 
-const FestivalCard = ({ festival, location, compatibility }) => {
+const FestivalCard = ({ festival, location }) => {
   const navigation = useNavigation();
   return (
     <SafeAreaView>
@@ -13,8 +13,7 @@ const FestivalCard = ({ festival, location, compatibility }) => {
           navigation.navigate(
             "FestivalPage",
             { selectedFestival: festival },
-            { location: location },
-            { compatibility: compatibility }
+            { location: location }
           );
         }}
       >
@@ -26,7 +25,7 @@ const FestivalCard = ({ festival, location, compatibility }) => {
             <Text variant="titleLarge">{festival.eventname}</Text>
             <Text variant="bodyMedium">{festival.venue.address}</Text>
             <Text variant="bodyMedium">{festival.startdate}</Text>
-            <Text>{compatibility}</Text>
+            <Text>{festival.compatibility}</Text>
           </View>
           <Card.Actions></Card.Actions>
         </Card>
