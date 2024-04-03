@@ -5,6 +5,7 @@ import FestivalCard from "./FestivalCard";
 import { getArtistsInfo } from "../api";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../Contexts/user";
+import { compatibilityCalculator } from "../utils/compatibilityCalculator";
 
 const FestivalList = ({
   festivalResult,
@@ -13,36 +14,24 @@ const FestivalList = ({
   location,
 }) => {
   const [loadingFestivals, setLoadingFestivals] = useState([]);
-  const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   const [festivalGenres, setFestivalGenres] = useState([]);
+  const [festivalCompatibility, setFestivalCompatibility] = useState([]);
 
   useEffect(() => {
     if (Object.keys(festivalResult).length > 0) {
       setLoadingFestivals(new Array(festivalResult.length).fill(true));
       festivalResult.forEach((festival, festivalIndex) => {
-        if (festival.artists.length > 0) {
-          const artistsId = festival.artists.map((artist) => {
-            const spotifyUrl = artist.spotifyartisturl;
-            if (spotifyUrl) {
-              const splitUrl = spotifyUrl.split(":");
-              return splitUrl[splitUrl.length - 1];
-            }
+        compatibilityCalculator(festival).then((compatStr) => {
+          setFestivalCompatibility((currFestivalCompatibility) => {
+            const compatibilityCopy = [...currFestivalCompatibility];
+            compatibilityCopy[festivalIndex] = compatStr;
           });
-          getArtistsInfo(artistsId, loggedInUser).then((response) => {
-            setLoadingFestivals((currLoadingFestivals) => {
-              const loadingFestivalsCopy = [...currLoadingFestivals];
-              loadingFestivalsCopy[festivalIndex] = false;
-              return loadingFestivalsCopy;
-            });
-            return response;
-          });
-        } else {
           setLoadingFestivals((currLoadingFestivals) => {
             const loadingFestivalsCopy = [...currLoadingFestivals];
             loadingFestivalsCopy[festivalIndex] = false;
             return loadingFestivalsCopy;
           });
-        }
+        });
       });
     }
   }, [festivalResult]);
@@ -51,25 +40,64 @@ const FestivalList = ({
     <>
       {Object.keys(festivalResult).length > 0 ? (
         loadingFestivals.every((loading) => loading === false) ? (
-          <ScrollView style= {{height:"50%"}}>
-            {festivalResult.map((festival, index) => {
-              return (
-                <FestivalCard
-                  festivalGenres={festivalGenres[index]}
-                  key={festival.id}
-                  festival={festival}
-                  festivalIndex={index}
-                  setFestivalResult={setFestivalResult}
-                  location={location}
-                />
-              );
-            })}
+          <ScrollView style={{ height: "50%" }}>
+            {festivalResult
+              .sort((previous, current) => {
+                let previousCompatibilityValue =
+                  festivalCompatibility[festivalResult.indexOf(previous)];
+                let currentCompatibilityValue =
+                  festivalCompatibility[festivalResult.indexOf(current)];
+                if (
+                  currentCompatibilityValue ===
+                  "Unable to calculate compatibility"
+                ) {
+                  currentCompatibilityValue = -2;
+                } else if (currentCompatibilityValue === "Lineup TBA") {
+                  currentCompatibilityValue = -1;
+                } else {
+                  currentCompatibilityValue = Number(
+                    currentCompatibilityValue.match(/\d+/)
+                  );
+                }
+                if (
+                  previousCompatibilityValue ===
+                  "Unable to calculate compatibility"
+                ) {
+                  previousCompatibilityValue = -2;
+                } else if (previousCompatibilityValue === "Lineup TBA") {
+                  previousCompatibilityValue = -1;
+                } else {
+                  previousCompatibilityValue = Number(
+                    previousCompatibilityValue.match(/\d+/)
+                  );
+                }
+                return currentCompatibilityValue - previousCompatibilityValue;
+              })
+              .map((festival, index) => {
+                return (
+                  <FestivalCard
+                    key={festival.id}
+                    festival={festival}
+                    location={location}
+                    compatibility={festivalCompatibility[index]}
+                  />
+                );
+              })}
           </ScrollView>
         ) : (
           <Loading />
         )
       ) : (
-        <Text style={{fontSize: 18, textAlign: "center", padding: 10, fontWeight: "bold",}}>{error}</Text>
+        <Text
+          style={{
+            fontSize: 18,
+            textAlign: "center",
+            padding: 10,
+            fontWeight: "bold",
+          }}
+        >
+          {error}
+        </Text>
       )}
     </>
   );

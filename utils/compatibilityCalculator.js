@@ -1,17 +1,14 @@
-import * as React from "react";
-import { Text } from "react-native";
 import { getArtistsInfo } from "../api";
 import { useContext, useState } from "react";
 import { UserContext } from "../Contexts/user";
-export const Compatibility = ({ festival, festivalGenres }) => {
+export const compatibilityCalculator = ( festival ) => {
   const festivalArtistsArr = festival.artists.map((artist) => {
     return artist.name;
   });
   if (festival.artists.length === 0) {
-    return <Text>Lineup TBA</Text>;
+    return "Lineup TBA";
   }
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
-  const [compatibility, setCompatibility] = useState("");
   const artistsId = [];
   festival.artists.forEach((artist) => {
     const spotifyUrl = artist.spotifyartisturl;
@@ -21,9 +18,9 @@ export const Compatibility = ({ festival, festivalGenres }) => {
     }
   });
   if (artistsId.length === 0) {
-    return <Text>Unable to calculate compatibility</Text>;
+    return "Unable to calculate compatibility";
   }
-  getArtistsInfo(artistsId, loggedInUser).then((genres) => {
+   return getArtistsInfo(artistsId, loggedInUser).then((genres) => {
     const topGenresObj = {};
     genres.flat().forEach((genre) => {
       if (!topGenresObj[genre]) {
@@ -68,8 +65,6 @@ export const Compatibility = ({ festival, festivalGenres }) => {
     } else if (festival.artists.length > 10) {
       compatibilityRating *= 2;
     }
-    console.log(compatibilityRating)
-    setCompatibility(`${Math.ceil(compatibilityRating)}% compatible`);
+    return `${Math.ceil(compatibilityRating)}% compatible`
   });
-  return <Text>{compatibility}</Text>;
 };
