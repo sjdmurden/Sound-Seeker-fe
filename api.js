@@ -3,11 +3,7 @@ import { TokenError, TokenResponse } from "expo-auth-session";
 const SpotifyWebApi = require("spotify-web-api-node");
 import * as SecureStore from "expo-secure-store";
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: process.env.EXPO_PUBLIC_CLIENT_ID,
-  clientSecret: process.env.EXPO_PUBLIC_CLIENT_SECRET,
-  redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI,
-});
+
 
 export const searchAllFestivals = (festival_name) => {
   return axios
@@ -63,6 +59,11 @@ export const getFestivalByLocation = (location, radius) => {
 };
 
 export const getArtistsInfo = (artistsId, loggedInUser) => {
+  const spotifyApi = new SpotifyWebApi({
+    clientId: process.env.EXPO_PUBLIC_CLIENT_ID,
+    clientSecret: process.env.EXPO_PUBLIC_CLIENT_SECRET,
+    redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI,
+  });
   return axios
     .get(`https://sound-seeker.onrender.com/api/users/${loggedInUser.id}/token`)
     .then(({ data: { token } }) => {
