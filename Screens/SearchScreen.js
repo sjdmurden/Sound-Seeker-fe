@@ -9,6 +9,7 @@ import {
   View,
   Button,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import {
   searchAllFestivals,
@@ -24,6 +25,7 @@ import LogOut from "./LogOut";
 import { Searchbar } from "react-native-paper";
 import { useFonts, Lobster_400Regular } from "@expo-google-fonts/lobster";
 import { UserContext } from "../Contexts/user";
+import { LinearGradient } from "expo-linear-gradient";
 
 const SearchScreen = () => {
   const [input, setInput] = useState("");
@@ -125,79 +127,63 @@ const SearchScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.page}>
-      <Text style={styles.title}>Sound Seeker</Text>
-      <Text style={styles.welcome}>Welcome {loggedInUser.display_name}</Text>
-      <SafeAreaView style={styles.buttonsContainer}>
-        {/* <SegmentedButtons
-          value={selectedTab}
-          onValueChange={setSelectedTab}
-          style={styles.buttons}
-          buttons={[
-            {
-              value: "festival",
-              label: "Festival",
-              style:
-                selectedTab === "festival" ? styles.buttonPress : styles.buttonNormal
-            },
-            {
-              value: "artist",
-              label: "Artist",
-              style: selectedTab === "artist" ? styles.buttonPress : styles.buttonNormal
-            },
-            {
-              value: "location",
-              label: "Location",
-              style: selectedTab === "location" ? styles.buttonPress : styles.buttonNormal
-            },
-          ]}
-        /> */}
-        <View
-          style={styles.buttonsContainer}
-          onPress={() => handleSelectTab("festival")}
-        >
-          <TouchableOpacity
-            style={changeButtonStyle("festival")}
+    <LinearGradient
+      colors={["rgb(4,32,84)", "rgb(4,69,108)"]}
+      style={{ flex: 1 }}
+    >
+      <StatusBar backgroundColor="#61dafb" />
+      <SafeAreaView edges={["right", "left", "top"]}>
+        {fontsLoaded && <Text style={styles.title}>Sound Seeker</Text>}
+        <Text style={styles.welcome}>Welcome {loggedInUser.display_name}</Text>
+
+       
+          <View
+            style={styles.buttonsContainer}
             onPress={() => handleSelectTab("festival")}
           >
-            <Text style={changeButtonStyle("festival")}>Festival</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={changeButtonStyle("artist")}
-            onPress={() => handleSelectTab("artist")}
-          >
-            <Text style={changeButtonStyle("artist")}>Artist</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={changeButtonStyle("location")}
-            onPress={() => handleSelectTab("location")}
-          >
-            <Text style={changeButtonStyle("location")}>Location</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+            <TouchableOpacity
+              style={changeButtonStyle("festival")}
+              onPress={() => handleSelectTab("festival")}
+            >
+              <Text style={changeButtonStyle("festival")}>Festival</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={changeButtonStyle("artist")}
+              onPress={() => handleSelectTab("artist")}
+            >
+              <Text style={changeButtonStyle("artist")}>Artist</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={changeButtonStyle("location")}
+              onPress={() => handleSelectTab("location")}
+            >
+              <Text style={changeButtonStyle("location")}>Location</Text>
+            </TouchableOpacity>
+          </View>
+     
 
-      {selectedTab !== "location" ? (
-        <Searchbar
-          placeholder="Search..."
-          value={input}
-          onChangeText={setInput}
-          onSubmitEditing={handleFestivalSearch}
-          style={styles.searchBox}
-        />
-      ) : (
-        <SelectList
-          setSelected={(key) => setRadius(key)}
-          data={data}
-          save="key"
-          onSelect={handleFestivalSearch}
-          inputStyles={styles.inputLocationBox}
-          boxStyles={styles.locationSearchBox}
-          dropdownStyles={styles.dropdown}
-          dropdownTextStyles={styles.dropdownTextStyles}
-          dropdownItemStyles={styles.dropdownItemStyles}
-        />
-      )}
+        {selectedTab !== "location" ? (
+          <Searchbar
+            placeholder="Search..."
+            value={input}
+            onChangeText={setInput}
+            onSubmitEditing={handleFestivalSearch}
+            style={styles.searchBox}
+          />
+        ) : (
+          <SelectList
+            setSelected={(key) => setRadius(key)}
+            data={data}
+            save="key"
+            onSelect={handleFestivalSearch}
+            inputStyles={styles.inputLocationBox}
+            boxStyles={styles.locationSearchBox}
+            dropdownStyles={styles.dropdown}
+            dropdownTextStyles={styles.dropdownTextStyles}
+            dropdownItemStyles={styles.dropdownItemStyles}
+          />
+        )}
+      </SafeAreaView>
       <FestivalList
         festivalResult={festivalResult}
         setFestivalResult={setFestivalResult}
@@ -205,54 +191,63 @@ const SearchScreen = () => {
         error={error}
       />
 
-      <LogOut
-      />
-    </SafeAreaView>
+      <LogOut />
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   title: {
     fontSize: 40,
-    color: "#1d8597",
+    color: "white",
     paddingLeft: 20,
     paddingTop: 30,
     fontFamily: "Lobster_400Regular",
   },
   welcome: {
     fontSize: 20,
-    color: "#1d8597",
+    color: "white",
     paddingLeft: 20,
     paddingTop: 10,
+    marginBottom: 40,
   },
   page: {
-    flex: 1,
-    backgroundColor: "#fef3df",
+    // backgroundColor: "#fef3df",
   },
   searchBox: {
-    backgroundColor: "white",
+    backgroundColor: "#faf8fc",
     borderRadius: 20,
     margin: 20,
     marginTop: 0,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.5,
-    shadowColor: "#f4c58e",
+    shadowColor: "#17212b",
     shadowRadius: 5,
+    marginTop: 35,
   },
   button: {
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "white",
     marginTop: 0,
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: 12,
+    marginRight: 12,
+    borderRadius: 20,
+    padding: 2,
+    paddingBottom: 4,
+    paddingTop: 4,
   },
   buttonPress: {
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: "bold",
     borderRadius: 20,
     marginTop: 0,
-    marginLeft: 20,
-    marginRight: 20,
-    backgroundColor: "#fc9454",
+    marginLeft: 12,
+    marginRight: 12,
+    backgroundColor: "#cf2c1f",
     padding: 2,
+    paddingBottom: 4,
+    paddingTop: 4,
     color: "white",
   },
   textPress: {
@@ -268,15 +263,15 @@ const styles = StyleSheet.create({
     color: "#F8C383",
   },
   locationSearchBox: {
-    borderColor: "white",
-    backgroundColor: "white",
+    borderColor: "#faf8fc",
+    backgroundColor: "#faf8fc",
     borderRadius: 20,
 
     margin: 20,
-    marginTop: 0,
+    marginTop: 35,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.5,
-    shadowColor: "#f4c58e",
+    shadowColor: "#17212b",
     shadowRadius: 5,
   },
   inputLocationBox: {
@@ -284,24 +279,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   dropdown: {
-    borderColor: "white",
-    backgroundColor: "white",
+    borderColor: "#faf8fc",
+    backgroundColor: "#faf8fc",
     borderRadius: 20,
     padding: 10,
     margin: 20,
     marginTop: 0,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.5,
-    shadowColor: "#f4c58e",
+    shadowColor: "#17212b",
     shadowRadius: 5,
-    
   },
   dropdownTextStyles: {
     fontSize: 14,
-    
   },
-
-
 });
 
 export default SearchScreen;

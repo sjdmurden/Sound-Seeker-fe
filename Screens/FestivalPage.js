@@ -1,14 +1,32 @@
-import { ScrollView, StyleSheet, View, Linking, TouchableOpacity, FlatList, Image} from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Linking,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  LogBox,
+} from "react-native";
 import { Card, Text } from "react-native-paper";
 import MapView, { Marker } from "react-native-maps";
 import { StatusBar } from "expo-status-bar";
 import * as Location from "expo-location";
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faLocationDot, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+  faLocationDot,
+  faCalendarDays,
+} from "@fortawesome/free-solid-svg-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useEffect } from "react";
 
 function FestivalPage({ route }) {
   const festival = route.params.selectedFestival;
   const { latitude, longitude } = festival.venue;
+
+  useEffect(() => {
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+  }, []);
 
   const handleArtistPress = (spotifyUrl) => {
     Linking.openURL(spotifyUrl);
@@ -19,28 +37,29 @@ function FestivalPage({ route }) {
       style={styles.artistContainer}
       onPress={() => handleArtistPress(item.spotifyartisturl)}
     >
-      <Image
-        source={{ uri: item.image }}
-        style={styles.artistImage}
-      />
+      <Image source={{ uri: item.image }} style={styles.artistImage} />
       <Text style={styles.artistName}>{item.name}</Text>
     </TouchableOpacity>
   );
 
   return (
     <ScrollView>
-      <Card>
+      <Card style={{ backgroundColor: "#faf8fc" }}>
         <Card.Content style={styles.card}>
           <Card.Cover src={festival.xlargeimageurl} />
-          <Text variant="headlineLarge" >{festival.eventname}</Text>
-          <Text variant="titleMedium" style={styles.details}>{festival.description}</Text>
+          <Text variant="headlineLarge" style={{ fontWeight: "bold" }}>
+            {festival.eventname}
+          </Text>
+          <Text variant="titleMedium" style={styles.details}>
+            {festival.description}
+          </Text>
           <Text variant="bodyMedium" style={styles.details}>
-          <FontAwesomeIcon icon={faCalendarDays} />
-            {festival.startdate.slice(0, 10)} until{" "}
+            <FontAwesomeIcon icon={faCalendarDays} /> {""}
+            {festival.startdate.slice(0, 10)} {""} //{" "}
             {festival.enddate.slice(0, 10)}
           </Text>
           <Text variant="bodyMedium" style={styles.details}>
-            <FontAwesomeIcon icon={faLocationDot} />
+            <FontAwesomeIcon icon={faLocationDot} /> {""}
             {festival.venue.address}, {festival.venue.postcode}
           </Text>
 
@@ -59,13 +78,27 @@ function FestivalPage({ route }) {
               })}
           </View>
           <View style={styles.lineup}>
-            <Text variant="titleLarge">Line Up</Text>
+            {festival.artists.length > 0 ? (
+              <Text
+                variant="titleLarge"
+                style={{ marginBottom: 10, fontWeight: "bold" }}
+              >
+                Line Up
+              </Text>
+            ) : (
+              <Text
+                variant="titleLarge"
+                style={{ marginBottom: 10, fontWeight: "bold" }}
+              >
+                Line Up TBA
+              </Text>
+            )}
             {/* change flatlist to alternative*/}
             <FlatList
               data={festival.artists}
               renderItem={renderItem}
               keyExtractor={(item) => item.artistid.toString()}
-              numColumns={3} 
+              numColumns={3}
             />
           </View>
           <MapView
@@ -93,10 +126,10 @@ function FestivalPage({ route }) {
 }
 
 const styles = StyleSheet.create({
-  card : {
+  card: {
     margin: 10,
   },
-  details : {
+  details: {
     margin: 5,
   },
   genresContainer: {
@@ -107,7 +140,7 @@ const styles = StyleSheet.create({
   },
   genres: {
     marginRight: 10,
-    color: "blue",
+    color: "#194485",
   },
   lineup: {
     display: "flex",
@@ -125,11 +158,12 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     borderRadius: 10,
     borderColor: "black",
-    borderWidth: 2,
+    borderWidth: 0.5,
+    marginTop: 15,
   },
   artistContainer: {
-    width: '33.33%', 
-    alignItems: 'center',
+    width: "33.33%",
+    alignItems: "center",
     marginBottom: 15,
   },
   artistImage: {
@@ -142,7 +176,6 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "center",
   },
-
 });
 
 export default FestivalPage;

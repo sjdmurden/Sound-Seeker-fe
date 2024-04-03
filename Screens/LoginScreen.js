@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Pressable } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Pressable, StatusBar, } from "react-native";
 import { useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from "@expo/vector-icons";
@@ -47,7 +47,6 @@ function LoginScreen({ navigation }) {
             display_name: user.display_name,
             id: user.id,
           });
-          console.log(jsonUser)
           SecureStore.setItemAsync("logged-in-user-key", jsonUser);
           setLoggedInUser(JSON.parse(jsonUser));
         });
@@ -60,6 +59,7 @@ function LoginScreen({ navigation }) {
       style={{ flex: 1 }}
     >
       <SafeAreaView>
+      <StatusBar backgroundColor="#61dafb" />
         <View style={{ height: 80 }} />
 
         {fontsLoaded && (
@@ -94,13 +94,19 @@ function LoginScreen({ navigation }) {
             size={logoSize}
             color="white"
           />
-          <Text style={{
-              textAlign: "center",
-              color: "white",
-              fontSize: 30,
-              fontFamily: "Lobster_400Regular",
-              margin: 20,
-          }}>Tap to Login</Text>
+          {fontsLoaded && (
+            <Text
+              style={{
+                textAlign: "center",
+                color: "white",
+                fontSize: 30,
+                fontFamily: "Lobster_400Regular",
+                margin: 20,
+              }}
+            >
+              Tap to Login
+            </Text>
+          )}
         </Pressable>
       </SafeAreaView>
     </LinearGradient>

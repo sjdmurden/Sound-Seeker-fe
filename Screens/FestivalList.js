@@ -16,42 +16,42 @@ const FestivalList = ({
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   const [festivalGenres, setFestivalGenres] = useState([]);
 
-  useEffect(() => {
-    if (Object.keys(festivalResult).length > 0) {
-      setLoadingFestivals(new Array(festivalResult.length).fill(true));
-      festivalResult.forEach((festival, festivalIndex) => {
-        if (festival.artists.length > 0) {
-          const artistsId = festival.artists.map((artist) => {
-            const spotifyUrl = artist.spotifyartisturl;
-            if (spotifyUrl) {
-              const splitUrl = spotifyUrl.split(":");
-              return splitUrl[splitUrl.length - 1];
-            }
-          });
-          getArtistsInfo(artistsId, loggedInUser).then((response) => {
-            setLoadingFestivals((currLoadingFestivals) => {
-              const loadingFestivalsCopy = [...currLoadingFestivals];
-              loadingFestivalsCopy[festivalIndex] = false;
-              return loadingFestivalsCopy;
-            });
-            return response;
-          });
-        } else {
-          setLoadingFestivals((currLoadingFestivals) => {
-            const loadingFestivalsCopy = [...currLoadingFestivals];
-            loadingFestivalsCopy[festivalIndex] = false;
-            return loadingFestivalsCopy;
-          });
-        }
-      });
-    }
-  }, [festivalResult]);
+  // useEffect(() => {
+  //   if (Object.keys(festivalResult).length > 0) {
+  //     setLoadingFestivals(new Array(festivalResult.length).fill(true));
+  //     festivalResult.forEach((festival, festivalIndex) => {
+  //       if (festival.artists.length > 0) {
+  //         const artistsId = festival.artists.map((artist) => {
+  //           const spotifyUrl = artist.spotifyartisturl;
+  //           if (spotifyUrl) {
+  //             const splitUrl = spotifyUrl.split(":");
+  //             return splitUrl[splitUrl.length - 1];
+  //           }
+  //         });
+  //         getArtistsInfo(artistsId, loggedInUser).then((response) => {
+  //           setLoadingFestivals((currLoadingFestivals) => {
+  //             const loadingFestivalsCopy = [...currLoadingFestivals];
+  //             loadingFestivalsCopy[festivalIndex] = false;
+  //             return loadingFestivalsCopy;
+  //           });
+  //           return response;
+  //         });
+  //       } else {
+  //         setLoadingFestivals((currLoadingFestivals) => {
+  //           const loadingFestivalsCopy = [...currLoadingFestivals];
+  //           loadingFestivalsCopy[festivalIndex] = false;
+  //           return loadingFestivalsCopy;
+  //         });
+  //       }
+  //     });
+  //   }
+  // }, [festivalResult]);
 
   return (
     <>
       {Object.keys(festivalResult).length > 0 ? (
         loadingFestivals.every((loading) => loading === false) ? (
-          <ScrollView style= {{height:"50%"}}>
+          <ScrollView style={{ height: "50%", margin: 15 }}>
             {festivalResult.map((festival, index) => {
               return (
                 <FestivalCard
@@ -69,7 +69,17 @@ const FestivalList = ({
           <Loading />
         )
       ) : (
-        <Text style={{fontSize: 18, textAlign: "center", padding: 10, fontWeight: "bold",}}>{error}</Text>
+        <Text
+          style={{
+            color: "white",
+            fontSize: 18,
+            textAlign: "center",
+            padding: 10,
+            fontWeight: "bold",
+          }}
+        >
+          {error}
+        </Text>
       )}
     </>
   );

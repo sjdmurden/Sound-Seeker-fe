@@ -64,7 +64,8 @@ export const getArtistsInfo = (artistsId, loggedInUser) => {
     clientSecret: process.env.EXPO_PUBLIC_CLIENT_SECRET,
     redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI,
   });
-  return axios
+  return true
+  axios
     .get(`https://sound-seeker.onrender.com/api/users/${loggedInUser.id}/token`)
     .then(({ data: { token } }) => {
       spotifyApi.setAccessToken(token);
