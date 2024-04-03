@@ -48,10 +48,9 @@ const FestivalCard = ({ festival, location }) => {
               {festival.artists &&
                 festival.artists.slice(0, 3).map((artist) => {
                   return (
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={{ flexDirection: "row" }} key={artist.artistid}>
                       <Text> {"."}</Text>
                       <Text
-                        key={artist.artistid}
                         variant="bodyLarge"
                         style={{ paddingLeft: 4 }}
                       >
