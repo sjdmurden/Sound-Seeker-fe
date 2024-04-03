@@ -1,17 +1,25 @@
-import * as React from "react";
-import { Text } from "react-native";
 import { getArtistsInfo } from "../api";
-import { useContext, useState } from "react";
-import { UserContext } from "../Contexts/user";
-export const Compatibility = ({ festival, festivalGenres }) => {
+
+export const compatibilityCalculator = (festivals, loggedInUser) => {
+  return Promise.all(festivals.map((festival) => {
+    return getCompatilibity(festival, loggedInUser)
+      .then((compatibility) => {
+        festival.compatibility = compatibility
+        return festival;
+      })
+  }))
+}
+
+const getCompatilibity = ( festival , loggedInUser) => {
+  // Return out if there are no artists
   const festivalArtistsArr = festival.artists.map((artist) => {
     return artist.name;
   });
   if (festival.artists.length === 0) {
-    return <Text>Lineup TBA</Text>;
+    return Promise.resolve("Lineup TBA")
   }
-  const { loggedInUser, setLoggedInUser } = useContext(UserContext);
-  const [compatibility, setCompatibility] = useState("");
+
+  // Return out if there are artists but none have Spotify
   const artistsId = [];
   festival.artists.forEach((artist) => {
     const spotifyUrl = artist.spotifyartisturl;
@@ -21,9 +29,11 @@ export const Compatibility = ({ festival, festivalGenres }) => {
     }
   });
   if (artistsId.length === 0) {
-    return <Text>Unable to calculate compatibility</Text>;
+    return Promise.resolve("Unable to calculate compatibility")
   }
-  getArtistsInfo(artistsId, loggedInUser).then((genres) => {
+
+  // Return out with compatibility
+  return getArtistsInfo(artistsId, loggedInUser).then((genres) => {
     const topGenresObj = {};
     genres.flat().forEach((genre) => {
       if (!topGenresObj[genre]) {
@@ -68,7 +78,6 @@ export const Compatibility = ({ festival, festivalGenres }) => {
     } else if (festival.artists.length > 10) {
       compatibilityRating *= 2;
     }
-    setCompatibility(`${Math.ceil(compatibilityRating)}% compatible`);
+    return `${Math.ceil(compatibilityRating)}% compatible`
   });
-  return <Text>{compatibility}</Text>;
 };

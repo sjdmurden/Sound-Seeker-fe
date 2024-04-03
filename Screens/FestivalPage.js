@@ -44,7 +44,7 @@ function FestivalPage({ route }) {
             <FontAwesomeIcon icon={faLocationDot} />
             {festival.venue.address}, {festival.venue.postcode}
           </Text>
-
+          <Text>{festival.compatibility}</Text>
           <View style={styles.genresContainer}>
             {festival.genres &&
               festival.genres.slice(0, 5).map((genre) => {
