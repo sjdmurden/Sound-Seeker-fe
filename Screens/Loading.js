@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ActivityIndicator } from "react-native-paper";
 import { StyleSheet } from "react-native-web";
-import {Text} from "react-native"
+import { Text } from "react-native";
 
 const Loading = () => {
   return (
@@ -9,9 +9,12 @@ const Loading = () => {
       <ActivityIndicator
         animating={true}
         size={"large"}
+        color={"#faf8fc"}
         style={styles.loading}
       />
-      <Text style={{textAlign: "center"}}>Finding you the best festivals, Please wait...</Text>
+      <Text style={{ textAlign: "center" }}>
+        Finding you the best festivals, Please wait...
+      </Text>
     </>
   );
 };

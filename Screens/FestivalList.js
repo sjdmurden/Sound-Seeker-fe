@@ -54,7 +54,7 @@ const FestivalList = ({ festivalResult, setFestivalResult, isLoading, setIsLoadi
     isLoading ?
       <Loading />
       :
-      <ScrollView style={{ height: "50%" }}>
+      <ScrollView style={{ height: "50%", margin: 15 }}>
         {festivalResult.map((festival) => {
           return (
             <FestivalCard

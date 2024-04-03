@@ -27,19 +27,20 @@ export default LogOut = () => {
 
 const styles = StyleSheet.create({
   logoutButton: {
-    fontSize: 18,
+    fontSize: 14,
     color: "white",
+    fontWeight: "bold",
     textAlign: "center",
   },
   container: {
     position: "absolute",
-    top: 110,
+    top: 115,
 
     right: 20,
     fontSize: 16,
-    borderRadius: 20,
-
-    backgroundColor: "#fc9454",
+    borderRadius: 10,
+   
+    backgroundColor: "#cf2c1f",
     padding: 12,
   },
 });

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Pressable } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Pressable, StatusBar, } from "react-native";
 import { useAuthRequest, makeRedirectUri } from "expo-auth-session";
 import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from "@expo/vector-icons";
@@ -63,19 +63,16 @@ function LoginScreen({ navigation }) {
       >
         <SafeAreaView>
           <View style={{ height: 80 }} />
-
-          {fontsLoaded && (
-            <Text
-              style={{
-                color: "white",
-                fontSize: 45,
-                textAlign: "center",
-                fontFamily: "Lobster_400Regular",
-              }}
-            >
-              Sound Seeker
-            </Text>
-          )}
+          <Text
+            style={{
+              color: "white",
+              fontSize: 45,
+              textAlign: "center",
+              fontFamily: "Lobster_400Regular",
+            }}
+          >
+            Sound Seeker
+          </Text>
           <View style={{ height: 80 }} />
           <Pressable
             onPress={() => {
