@@ -1,9 +1,9 @@
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import LoginScreen from "./Screens/LoginScreen.js";
-import SearchScreen from "./Screens/SearchScreen.js";
-import FestivalPage from "./Screens/FestivalPage.js";
+import LoginScreen from "./screens/LoginScreen.js";
+import SearchScreen from "./screens/SearchScreen.js";
+import FestivalPage from "./screens/FestivalPage.js";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useContext } from "react";
 import { UserContext } from "./contexts/user.js";
