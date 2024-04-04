@@ -23,7 +23,7 @@ const FestivalList = ({
             let previousCompatibilityValue = previous.compatibility;
             let currentCompatibilityValue = current.compatibility;
             if (
-              currentCompatibilityValue === "Unable to calculate compatibility"
+              currentCompatibilityValue === "Compatibility N/A"
             ) {
               currentCompatibilityValue = -2;
             } else if (currentCompatibilityValue === "Lineup TBA") {
@@ -34,7 +34,7 @@ const FestivalList = ({
               );
             }
             if (
-              previousCompatibilityValue === "Unable to calculate compatibility"
+              previousCompatibilityValue === "Compatibility N/A"
             ) {
               previousCompatibilityValue = -2;
             } else if (previousCompatibilityValue === "Lineup TBA") {
@@ -46,7 +46,6 @@ const FestivalList = ({
             }
             return currentCompatibilityValue - previousCompatibilityValue;
           });
-          //is messing up error handling
           setFestivalResult(() => {
             setIsLoading(false);
 
@@ -60,7 +59,7 @@ const FestivalList = ({
   return isLoading ? (
     <Loading />
   ) : (
-    <ScrollView style={{ height: "60%", margin: 10 }}>
+    <ScrollView style={{ height: "60%", margin: 10 }} contentContainerStyle={{flexGrow: 1}}>
       {festivalResult.map((festival) => {
         return (
           <FestivalCard

@@ -14,6 +14,7 @@ const FestivalCard = ({ festival, location }) => {
   });
   return (
     <Button
+      style={{ height: 367 }}
       onPress={() => {
         navigation.navigate(
           "FestivalPage",
@@ -23,7 +24,7 @@ const FestivalCard = ({ festival, location }) => {
       }}
     >
       <LinearGradient colors={["#faf8fc", "#dad8dc"]} style={styles.container}>
-        <View >
+        <View>
           <Text
             style={{ fontWeight: "bold", margin: 2, marginTop: 5 }}
             variant="titleLarge"
@@ -52,7 +53,11 @@ const FestivalCard = ({ festival, location }) => {
             {festival.genres &&
               festival.genres.slice(0, 3).map((genre) => {
                 return (
-                  <Text style={{ color: "#505050" }} variant="bodyLarge">
+                  <Text
+                    key={genre.genreid}
+                    style={{ color: "#505050" }}
+                    variant="bodyLarge"
+                  >
                     #{genre.name}
                     {"  "}
                   </Text>
@@ -76,10 +81,12 @@ const FestivalCard = ({ festival, location }) => {
                 {festival.artists &&
                   festival.artists.slice(0, 3).map((artist) => {
                     return (
-                      <View style={{ flexDirection: "row" }}>
+                      <View
+                        key={artist.artistid}
+                        style={{ flexDirection: "row" }}
+                      >
                         <Text style={{ fontSize: 20 }}> {`\u2022`}</Text>
                         <Text
-                          key={artist.artistid}
                           variant="bodyLarge"
                           style={{ paddingLeft: 4, fontWeight: "semibold" }}
                         >
@@ -126,6 +133,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowColor: "#17212b",
     shadowRadius: 5,
+    marginHorizontal: 30,
+    marginVertical: 0,
+    paddingBottom: 10,
   },
   containerAfterTitle: {
     width: 310,
@@ -148,7 +158,6 @@ const styles = StyleSheet.create({
   },
   compatibility: {
     color: "white",
-
     width: "100%",
     paddingVertical: 8,
     borderColor: "#cf2c1f",

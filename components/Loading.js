@@ -13,7 +13,7 @@ const Loading = () => {
         style={styles.loading}
       />
       <Text style={{ textAlign: "center", color: "white" }}>
-        Finding you the best festivals, Please wait...
+        Finding you the best festivals, please wait...
       </Text>
     </>
   );

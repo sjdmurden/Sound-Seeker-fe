@@ -30,13 +30,13 @@ const getCompatilibity = (festival, loggedInUser) => {
     }
   });
   if (artistsId.length === 0) {
-    return Promise.resolve("Unable to calculate compatibility");
+    return Promise.resolve("Compatibility N/A");
   }
 
   // Return out with compatibility
   return getArtistsInfo(artistsId, loggedInUser).then((genres) => {
     if (!genres) {
-      return "Unable to calculate compatibility";
+      return "Compatibility N/A";
     }
     const topGenresObj = {};
     genres.flat().forEach((genre) => {
