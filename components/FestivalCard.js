@@ -124,7 +124,7 @@ const FestivalCard = ({ festival, location }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: "70",
+    height: "99%",
     paddingTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     marginHorizontal: 30,
     marginVertical: 0,
-    paddingBottom: 10,
+    paddingBottom: 0,
   },
   containerAfterTitle: {
     width: 310,
