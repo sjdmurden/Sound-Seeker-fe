@@ -5,7 +5,17 @@ import Svg, { Path, G } from "react-native-svg";
 import { useContext } from "react";
 import { UserContext } from "../contexts/user";
 import { getArtistsInfo } from "../api";
-import { Color } from "d3";
+
+const customColours = [
+  "#002054",
+  "#006E97",
+  "#00899D",
+  "#55B0A5",
+  "#FED8A6",
+  "#FFA65B",
+  "#FF5D00",
+  "#FF0000",
+];
 
 const PieChart = ({ festival }) => {
   const { width, height } = Dimensions.get("window");
@@ -45,8 +55,8 @@ const PieChart = ({ festival }) => {
   const color = d3
     .scaleOrdinal()
     .domain(topGenres.map((d) => d.genre))
-    .range(d3.schemeDark2);
-    
+    .range(customColours);
+
   const pie = d3
     .pie()
     .value((d) => d.count)
@@ -54,11 +64,12 @@ const PieChart = ({ festival }) => {
 
   const arcs = pie(topGenres);
 
-  const arcGenerator = d3.arc().innerRadius(0).outerRadius(150);
+  const arcGenerator = d3.arc().innerRadius(0).outerRadius(100);
 
   return (
-    <View style={styles.container}>
+    <View>
       <Text style={styles.title}>Festival Genres</Text>
+    <View style={styles.container}>
       <View style={styles.pieChart}>
         <Svg width={width} height={height}>
           <G transform={`translate(${width / 2},${height / 3})`}>
@@ -76,41 +87,47 @@ const PieChart = ({ festival }) => {
         {topGenres.map((genre, index) => (
           <Text
             key={index}
-            style={[styles.labels, {color: color(topGenres[index].genre)}]}
+            style={[styles.labels, { color: color(topGenres[index].genre) }]}
           >
             {genre.genre}
           </Text>
         ))}
       </View>
     </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    
   },
   title: {
+    textAlign: 'center',
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 30,
     marginBottom: -60,
   },
   pieChart: {
-    marginTop: -50,
+    marginTop: -80,
     marginBottom: -400,
+    marginLeft: -100,
+    marginRight: -40,
+    width: '100%',
   },
   labels: {
-    fontSize: 16,
+    fontSize: 14,
     marginVertical: 5,
   },
   labelList: {
     display: "flex",
     justifyContent: "center",
     alignItems: "flex-start",
+    marginTop: 40,
     marginBottom: 30,
   },
 });
