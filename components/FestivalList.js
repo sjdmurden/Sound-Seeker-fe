@@ -11,11 +11,12 @@ const FestivalList = ({
   isLoading,
   setIsLoading,
   location,
+  isFound,
 }) => {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
   useEffect(() => {
-    if (isLoading) {
+    if (isFound) {
       compatibilityCalculator(festivalResult, loggedInUser).then(
         (newFestivalResult) => {
           newFestivalResult.sort((previous, current) => {
@@ -48,17 +49,18 @@ const FestivalList = ({
           //is messing up error handling
           setFestivalResult(() => {
             setIsLoading(false);
+
             return newFestivalResult;
           });
         }
       );
     }
-  }, [isLoading]);
+  }, [isFound]);
 
   return isLoading ? (
     <Loading />
   ) : (
-    <ScrollView style={{ height: "50%", margin: 15 }}>
+    <ScrollView style={{ height: "60%", margin: 10 }}>
       {festivalResult.map((festival) => {
         return (
           <FestivalCard
