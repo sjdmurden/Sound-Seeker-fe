@@ -1,22 +1,23 @@
 import { getArtistsInfo } from "../api";
 
 export const compatibilityCalculator = (festivals, loggedInUser) => {
-  return Promise.all(festivals.map((festival) => {
-    return getCompatilibity(festival, loggedInUser)
-      .then((compatibility) => {
-        festival.compatibility = compatibility
+  return Promise.all(
+    festivals.map((festival) => {
+      return getCompatilibity(festival, loggedInUser).then((compatibility) => {
+        festival.compatibility = compatibility;
         return festival;
-      })
-  }))
-}
+      });
+    })
+  );
+};
 
-const getCompatilibity = ( festival , loggedInUser) => {
+const getCompatilibity = (festival, loggedInUser) => {
   // Return out if there are no artists
   const festivalArtistsArr = festival.artists.map((artist) => {
     return artist.name;
   });
   if (festival.artists.length === 0) {
-    return Promise.resolve("Lineup TBA")
+    return Promise.resolve("Lineup TBA");
   }
 
   // Return out if there are artists but none have Spotify
@@ -29,11 +30,14 @@ const getCompatilibity = ( festival , loggedInUser) => {
     }
   });
   if (artistsId.length === 0) {
-    return Promise.resolve("Unable to calculate compatibility")
+    return Promise.resolve("Unable to calculate compatibility");
   }
 
   // Return out with compatibility
   return getArtistsInfo(artistsId, loggedInUser).then((genres) => {
+    if (!genres) {
+      return "Unable to calculate compatibility";
+    }
     const topGenresObj = {};
     genres.flat().forEach((genre) => {
       if (!topGenresObj[genre]) {
@@ -78,6 +82,6 @@ const getCompatilibity = ( festival , loggedInUser) => {
     } else if (festival.artists.length > 10) {
       compatibilityRating *= 2;
     }
-    return `${Math.ceil(compatibilityRating)}% compatible`
+    return `Compatibility: ${Math.ceil(compatibilityRating)}%`;
   });
 };

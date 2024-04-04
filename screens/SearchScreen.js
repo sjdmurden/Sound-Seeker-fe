@@ -1,7 +1,13 @@
 import * as React from "react";
 import { useState, useEffect, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text, View, TouchableOpacity, StatusBar, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StatusBar,
+  StyleSheet,
+} from "react-native";
 import {
   searchAllFestivals,
   getArtistId,
@@ -26,6 +32,7 @@ const SearchScreen = () => {
   const [location, setLocation] = useState();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isFound, setIsFound] = useState(false);
   let [fontsLoaded] = useFonts({
     Lobster_400Regular,
   });
@@ -58,6 +65,7 @@ const SearchScreen = () => {
 
   function handleFestivalSearch() {
     setIsLoading(true);
+    setIsFound(false);
     if (selectedTab === "festival") {
       searchAllFestivals(input).then((response) => {
         const results = response.data.results;
@@ -68,6 +76,7 @@ const SearchScreen = () => {
             return festival;
           });
           setFestivalResult(loadingResults);
+          setIsFound(true);
         } else {
           setFestivalResult([]);
           setError("Sorry, no festival matches your search");
@@ -83,6 +92,7 @@ const SearchScreen = () => {
             if (response.data.results.length > 0) {
               setError("");
               setFestivalResult(response.data.results);
+              setIsFound(true);
             } else {
               setFestivalResult([]);
               setError(
@@ -102,6 +112,7 @@ const SearchScreen = () => {
         setFestivalResult(response.data.results);
         if (response.data.results.length > 0) {
           setFestivalResult(response.data.results);
+          setIsFound(true);
         } else {
           setError("Sorry, there are no festivals within this distance");
         }
@@ -180,6 +191,7 @@ const SearchScreen = () => {
             setIsLoading={setIsLoading}
             error={error}
             location={location}
+            isFound={isFound}
           />
         ) : (
           <Text
@@ -216,9 +228,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     marginBottom: 40,
   },
-  page: {
-    // backgroundColor: "#fef3df",
-  },
+
   searchBox: {
     backgroundColor: "#faf8fc",
     borderRadius: 20,

@@ -7,6 +7,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { UserContext } from "../contexts/user";
 import { useFonts, Lobster_400Regular } from "@expo-google-fonts/lobster";
+import { ActivityIndicator } from "react-native-paper";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -18,6 +19,7 @@ function LoginScreen() {
   const redirectUri = process.env.EXPO_PUBLIC_REDIRECT_URI;
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   const [shadowOpacity, setShadowOpacity] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [logoSize, setLogoSize] = useState(200);
   let [fontsLoaded] = useFonts({
     Lobster_400Regular,
@@ -35,6 +37,7 @@ function LoginScreen() {
 
   useEffect(() => {
     if (response?.type === "success") {
+      setIsLoading(true);
       const { code } = response.params;
       axios
         .post("https://sound-seeker.onrender.com/api/users/", { code })
@@ -47,8 +50,13 @@ function LoginScreen() {
           });
           SecureStore.setItemAsync("logged-in-user-key", jsonUser);
           setLoggedInUser(JSON.parse(jsonUser));
+          setIsLoading(false);
         });
-    }
+      }
+  else {
+    setShadowOpacity(0);
+    setLogoSize(200);
+  }
   }, [response]);
   if (!fontsLoaded) {
     return <Text></Text>;
@@ -71,37 +79,46 @@ function LoginScreen() {
             Sound Seeker
           </Text>
           <View style={{ height: 80 }} />
-          <Pressable
-            onPress={() => {
-              promptAsync();
-              setShadowOpacity(1);
-              setLogoSize(190);
-            }}
-          >
-            <Entypo
-              style={{
-                textAlign: "center",
-                shadowOpacity,
-                shadowRadius: 10,
-                shadowColor: "white",
-                shadowOffset: { width: 0, height: 0 },
-              }}
-              name="spotify"
-              size={logoSize}
-              color="white"
-            />
-            <Text
-              style={{
-                textAlign: "center",
-                color: "white",
-                fontSize: 30,
-                fontFamily: "Lobster_400Regular",
-                margin: 20,
+          {!isLoading ? (
+            <Pressable
+              onPress={() => {
+                promptAsync();
+                setShadowOpacity(1);
+                setLogoSize(190);
               }}
             >
-              Tap to Login
-            </Text>
-          </Pressable>
+              <Entypo
+                style={{
+                  textAlign: "center",
+                  shadowOpacity,
+                  shadowRadius: 10,
+                  shadowColor: "white",
+                  shadowOffset: { width: 0, height: 0 },
+                }}
+                name="spotify"
+                size={logoSize}
+                color="white"
+              />
+
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "white",
+                  fontSize: 30,
+                  fontFamily: "Lobster_400Regular",
+                  margin: 20,
+                }}
+              >
+                Tap to Login
+              </Text>
+            </Pressable>
+          ) : (
+            <ActivityIndicator
+              animating={true}
+              size={"large"}
+              color={"#faf8fc"}
+            />
+          )}
         </SafeAreaView>
       </LinearGradient>
     );

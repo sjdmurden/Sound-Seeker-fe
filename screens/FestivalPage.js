@@ -11,8 +11,11 @@ import {
 import { Card, Text } from "react-native-paper";
 import MapView, { Marker } from "react-native-maps";
 import { useEffect } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faLocationDot, faCalendarDays } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+  faLocationDot,
+  faCalendarDays,
+} from "@fortawesome/free-solid-svg-icons";
 import PieChart from "../components/Graphs";
 
 function FestivalPage({ route }) {
@@ -45,19 +48,6 @@ function FestivalPage({ route }) {
           <Text variant="headlineLarge" style={{ fontWeight: "bold" }}>
             {festival.eventname}
           </Text>
-          <Text variant="titleMedium" style={styles.details}>
-            {festival.description}
-          </Text>
-          <Text variant="bodyMedium" style={styles.details}>
-            <FontAwesomeIcon icon={faCalendarDays} /> {""}
-            {festival.startdate.slice(0, 10)} {""} //{" "}
-            {festival.enddate.slice(0, 10)}
-          </Text>
-          <Text variant="bodyMedium" style={styles.details}>
-            <FontAwesomeIcon icon={faLocationDot} /> {""}
-            {festival.venue.address}, {festival.venue.postcode}
-          </Text>
-          <Text>{festival.compatibility}</Text>
           <View style={styles.genresContainer}>
             {festival.genres &&
               festival.genres.slice(0, 5).map((genre) => {
@@ -65,13 +55,32 @@ function FestivalPage({ route }) {
                   <Text
                     style={styles.genres}
                     key={genre.genreid}
-                    variant="bodyMedium"
+                    variant="titleMedium"
                   >
+                    {" "}
                     #{genre.name}
                   </Text>
                 );
               })}
           </View>
+          <Text variant="titleMedium" style={styles.details}>
+            {festival.description}
+          </Text>
+          <Text
+            variant="titleLarge"
+            style={{ textAlign: "center", fontWeight: "bold", margin: 5 }}
+          >
+            {" "}
+            {festival.compatibility}
+          </Text>
+          <Text variant="bodyMedium" style={styles.details}>
+            <FontAwesomeIcon icon={faCalendarDays} /> {""}
+            {`${festival.startdate.slice(0, 10)}  //  ${festival.enddate.slice(0, 10)}`}
+          </Text>
+          <Text variant="bodyMedium" style={styles.details}>
+            <FontAwesomeIcon icon={faLocationDot} /> {""}
+            {festival.venue.address}, {festival.venue.postcode}
+          </Text>
           <View style={styles.lineup}>
             {festival.artists.length > 0 ? (
               <Text
@@ -84,9 +93,7 @@ function FestivalPage({ route }) {
               <Text
                 variant="titleLarge"
                 style={{ marginBottom: 10, fontWeight: "bold" }}
-              >
-                Line Up TBA
-              </Text>
+              ></Text>
             )}
             <FlatList
               data={festival.artists}
@@ -95,7 +102,7 @@ function FestivalPage({ route }) {
               numColumns={3}
             />
           </View>
-          <PieChart festival={festival}/>
+          <PieChart festival={festival} />
           <MapView
             style={styles.map}
             initialRegion={{
@@ -130,12 +137,11 @@ const styles = StyleSheet.create({
   genresContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginTop: 10,
-    marginBottom: 10,
+    margin: 3,
   },
   genres: {
     marginRight: 10,
-    color: "#194485",
+    color: "#505050",
   },
   lineup: {
     display: "flex",

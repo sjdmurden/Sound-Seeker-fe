@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   container: {
     position: "absolute",
-    top: 115,
+    top: 110,
 
     right: 20,
     fontSize: 16,
