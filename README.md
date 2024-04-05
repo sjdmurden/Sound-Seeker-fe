@@ -26,23 +26,22 @@ Due to the nature of the Spotify API this process is relatively lengthy, however
 1. **Set Up Backend:** Ensure that the backend server is up and running. You will need to set up the backend separately by following the instructions in the [backend repository](https://github.com/M1nhnho/Sound-Seeker-be).
 2. **Clone the Repository:** Clone this repository to your local machine using `git clone`.
 3. **Install Dependencies:** Navigate to the project directory and install dependencies by running `npm install`.
-4. **Spotify API:** Set up an app on [Spotify's dashboard](https://developer.spotify.com/) to get a client ID, client secret and to set up the redirect URI. More details on how to do this can be found [here](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app).
 5. **Skiddle API:** Obtain API key for [Skiddle](https://www.skiddle.com/api/) by filling out this [form](https://www.skiddle.com/api/join.php).
 6. **Create Environment Variables:** Create a `.env.development` file in the root directory of the project and add the following variables:
    
    ```
-     EXPO_PUBLIC_CLIENT_ID = ...
+     EXPO_PUBLIC_CLIENT_ID = your client id from the Spotify dashboard
    
-     EXPO_PUBLIC_CLIENT_SECRET = ...
+     EXPO_PUBLIC_CLIENT_SECRET = your client secret from the Spotify dashboard
    
-     EXPO_PUBLIC_REDIRECT_URI = ...
+     EXPO_PUBLIC_REDIRECT_URI = your redirect URI from the Spotify dashboard
    
      EXPO_PUBLIC_SKIDDLE_API_KEY = ...
    
      EXPO_PUBLIC_BACKEND_API_URL = ...
    ```
-5. **Run the App:** After configuring the APIs, run the app on your device or simulator using `npm run start`.
-6. **Explore and Enjoy:** Once the app is running, explore the various features and functionalities to discover festivals tailored to your preferences.
+7. **Run the App:** After configuring the APIs, run the app on your device or simulator using `npm run start`.
+8. **Explore and Enjoy:** Once the app is running, explore the various features and functionalities to discover festivals tailored to your preferences.
 ## Technologies Used
 - **React Native:** Sound Seeker is built using React Native.
 - **Expo:** Utilized for a range of handy packages including maps, secure store and authorisation.
