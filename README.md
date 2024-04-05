@@ -12,6 +12,8 @@ A demonstration of the app can be found [here](https://streamable.com/obl05m).
 <img src="https://github.com/sjdmurden/Sound-Seeker-fe/assets/81564712/66991a7e-c9d1-41f3-8c9d-97bbf478dd26" width=200/>
 <img src="https://github.com/sjdmurden/Sound-Seeker-fe/assets/81564712/5fd468c6-16fe-48da-9abe-749ceb0aad89" width=200/>
 <img src="https://github.com/sjdmurden/Sound-Seeker-fe/assets/81564712/dbc19da1-6284-453f-b7a6-8b18f52ab476" width=200/>
+<img src="https://github.com/sjdmurden/Sound-Seeker-fe/assets/81564712/83421a73-1f94-4dbf-836b-53b49ff2288b" width=200/>
+<img src="https://github.com/sjdmurden/Sound-Seeker-fe/assets/81564712/6a7a9a5f-62d1-4697-888d-4bbde3a7f855" width=200/>
 
 ## Features
 - **Search by Festival:** Easily search for festivals by their name, if you already have an idea where you want to go.
