@@ -8,10 +8,12 @@ const spotifyApi = new SpotifyWebApi({
   redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI,
 });
 
+const skiddleApiKey = process.env.EXPO_PUBLIC_SKIDDLE_API_KEY
+
 export const searchAllFestivals = (festival_name) => {
   return axios
     .get(
-      `https://www.skiddle.com/api/v1/events?api_key=638e2af9d6545b37c5bf2afbed3261cc&eventcode=FEST&keyword=${festival_name}&description=1`
+      `https://www.skiddle.com/api/v1/events?api_key=${skiddleApiKey}&eventcode=FEST&keyword=${festival_name}&description=1`
     )
     .then((response) => {
       return response;
@@ -24,7 +26,7 @@ export const searchAllFestivals = (festival_name) => {
 export const getArtistId = (artist) => {
   return axios
     .get(
-      `https://www.skiddle.com/api/v1/artists?api_key=638e2af9d6545b37c5bf2afbed3261cc&name=${artist}`
+      `https://www.skiddle.com/api/v1/artists?api_key=${skiddleApiKey}&name=${artist}`
     )
     .then((response) => {
       return response;
@@ -37,7 +39,7 @@ export const getArtistId = (artist) => {
 export const getFestivalByArtist = (artistId) => {
   return axios
     .get(
-      `https://www.skiddle.com/api/v1/events?api_key=638e2af9d6545b37c5bf2afbed3261cc&eventcode=FEST&a=${artistId}&description=1&limit=50`
+      `https://www.skiddle.com/api/v1/events?api_key=${skiddleApiKey}&eventcode=FEST&a=${artistId}&description=1&limit=50`
     )
     .then((response) => {
       return response;
@@ -51,7 +53,7 @@ export const getFestivalByLocation = (location, radius) => {
   const { longitude, latitude } = location.coords;
   return axios
     .get(
-      `https://www.skiddle.com/api/v1/events?api_key=638e2af9d6545b37c5bf2afbed3261cc&eventcode=FEST&longitude=${longitude}&latitude=${latitude}&radius=${radius}&description=1&limit=100`
+      `https://www.skiddle.com/api/v1/events?api_key=${skiddleApiKey}&eventcode=FEST&longitude=${longitude}&latitude=${latitude}&radius=${radius}&description=1&limit=100`
     )
     .then((response) => {
       return response;
