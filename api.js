@@ -2,12 +2,12 @@ import axios from "axios";
 const SpotifyWebApi = require("spotify-web-api-node");
 import * as SecureStore from "expo-secure-store";
 
+const backendApiUrl = process.env.EXPO_PUBLIC_BACKEND_API_URL
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.EXPO_PUBLIC_CLIENT_ID,
   clientSecret: process.env.EXPO_PUBLIC_CLIENT_SECRET,
   redirectUri: process.env.EXPO_PUBLIC_REDIRECT_URI,
 });
-
 const skiddleApiKey = process.env.EXPO_PUBLIC_SKIDDLE_API_KEY
 
 export const searchAllFestivals = (festival_name) => {
@@ -65,7 +65,7 @@ export const getFestivalByLocation = (location, radius) => {
 
 export const getArtistsInfo = (artistsId, loggedInUser) => {
   return axios
-    .get(`https://sound-seeker.onrender.com/api/users/${loggedInUser.id}/token`)
+    .get(`${backendApiUrl}/api/users/${loggedInUser.id}/token`)
     .then(({ data: { token } }) => {
       spotifyApi.setAccessToken(token);
       return spotifyApi.getArtists(artistsId);
@@ -84,6 +84,6 @@ export const LogOutUser = (loggedInUser, setLoggedInUser) => {
   setLoggedInUser(null);
   SecureStore.deleteItemAsync("logged-in-user-key");
   axios.delete(
-    `https://sound-seeker.onrender.com/api/users/${loggedInUser.id}`
+    `${backendApiUrl}/api/users/${loggedInUser.id}`
   );
 };

@@ -17,6 +17,7 @@ const discovery = {
 function LoginScreen() {
   const clientId = process.env.EXPO_PUBLIC_CLIENT_ID;
   const redirectUri = process.env.EXPO_PUBLIC_REDIRECT_URI;
+  const backendApiUrl = process.env.EXPO_PUBLIC_BACKEND_API_URL;
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
   const [shadowOpacity, setShadowOpacity] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +41,7 @@ function LoginScreen() {
       setIsLoading(true);
       const { code } = response.params;
       axios
-        .post("https://sound-seeker.onrender.com/api/users/", { code })
+        .post(`${backendApiUrl}/api/users/`, { code })
         .then(({ data: { user } }) => {
           const jsonUser = JSON.stringify({
             top_genres: user.top_genres.slice(0, 20),
