@@ -137,7 +137,7 @@ const SearchScreen = ({ navigation }) => {
       <StatusBar backgroundColor="#61dafb" />
       <SafeAreaView edges={["right", "left", "top"]}>
         {fontsLoaded && <Text style={styles.title}>Sound Seeker</Text>}
-        <Text style={styles.welcome}>Welcome {loggedInUser.display_name}</Text>
+        <Text style={styles.welcome}>Welcome {loggedInUser && loggedInUser.display_name}</Text>
         <View
           style={styles.buttonsContainer}
           onPress={() => handleSelectTab("festival")}
