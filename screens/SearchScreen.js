@@ -24,7 +24,7 @@ import { useFonts, Lobster_400Regular } from "@expo-google-fonts/lobster";
 import { UserContext } from "../contexts/user";
 import { LinearGradient } from "expo-linear-gradient";
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }) => {
   const [input, setInput] = useState("");
   const [festivalResult, setFestivalResult] = useState([]);
   const [selectedTab, setSelectedTab] = useState("festival");
@@ -192,6 +192,7 @@ const SearchScreen = () => {
             error={error}
             location={location}
             isFound={isFound}
+            navigation={navigation}
           />
         ) : (
           <Text

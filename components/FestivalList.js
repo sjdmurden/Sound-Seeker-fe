@@ -12,6 +12,7 @@ const FestivalList = ({
   setIsLoading,
   location,
   isFound,
+  navigation
 }) => {
   const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
@@ -66,6 +67,7 @@ const FestivalList = ({
             key={festival.id}
             festival={festival}
             location={location}
+            navigation={navigation}
           />
         );
       })}

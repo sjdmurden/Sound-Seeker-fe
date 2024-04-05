@@ -1,14 +1,12 @@
 import * as React from "react";
 import { Button, Card, Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { useFonts, Lobster_400Regular } from "@expo-google-fonts/lobster";
 
-const FestivalCard = ({ festival, location }) => {
-  const navigation = useNavigation();
+const FestivalCard = ({ festival, location, navigation }) => {
   let [fontsLoaded] = useFonts({
     Lobster_400Regular,
   });
